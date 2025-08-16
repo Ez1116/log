@@ -1,0 +1,650 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>AISI 助你i教學 - 智慧學習平台</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="AISI智慧學習平台運用科技重新定義師生角色，培養學生自主學習能力與批判思考技能" />
+    <!-- 共用CSS資源 - 使用 ../ 指向上層目錄 -->
+    <link rel="stylesheet" href="../story-temp/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="../story-temp/assets/css/noscript.css" /></noscript>
+    
+    <!-- 自定義樣式：優化圖片顯示，避免裁切 -->
+    <style>
+        /* 所有圖片使用 contain 而非 cover，避免裁切 */
+        .banner.style1 .image img,
+        .spotlight.style1 .image img {
+            -moz-object-fit: contain !important;
+            -webkit-object-fit: contain !important;
+            -ms-object-fit: contain !important;
+            object-fit: contain !important;
+            -moz-object-position: center !important;
+            -webkit-object-position: center !important;
+            -ms-object-position: center !important;
+            object-position: center !important;
+        }
+        
+        /* 將圖片容器背景色改為白色，覆蓋預設的灰色背景 */
+        .banner.style1 .image,
+        .spotlight.style1 .image {
+            background-color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        
+        /* 頁面外圍邊框：讓內容自然向中央集中 */
+        body {
+            padding: 0 2.5% !important;
+            box-sizing: border-box !important;
+        }
+        
+        #wrapper {
+            max-width: none !important;
+            margin: 0 !important;
+        }
+        
+        /* 確保所有區塊都有統一的邊距處理 */
+        .banner, .spotlight, .wrapper {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        
+        /* 確保文字保持左對齊 */
+        .banner.style1 .content,
+        .spotlight.style1 .content {
+            text-align: left !important;
+        }
+        
+        /* Banner 封面區塊：調整為 45%-55% 比例，適應 front-image.JPG */
+        .banner.style1 .content {
+            width: 55% !important;
+        }
+        
+        .banner.style1 .image {
+            width: 45% !important;
+        }
+        
+        /* 核心理念區塊圖片放大 1.5 倍 */
+        #core-concept .banner.style1 .image img {
+            transform: scale(1.5) !important;
+            transform-origin: center !important;
+        }
+        
+        
+        
+        /* 響應式設計：平板尺寸 */
+        @media screen and (max-width: 1280px) {
+            .banner.style1 .content,
+            .spotlight.style1 .content {
+                width: 50% !important;
+            }
+            
+            .banner.style1 .image,
+            .spotlight.style1 .image {
+                width: 50% !important;
+            }
+        }
+        
+        /* 響應式設計：手機尺寸 */
+        @media screen and (max-width: 736px) {
+            .banner.style1,
+            .spotlight.style1 {
+                flex-direction: column !important;
+            }
+            
+            .banner.style1 .content,
+            .banner.style1 .image,
+            .spotlight.style1 .content,
+            .spotlight.style1 .image {
+                width: 100% !important;
+            }
+            
+            .banner.style1 .image,
+            .spotlight.style1 .image {
+                max-height: 300px !important;
+            }
+            
+            .banner.style1 .image img,
+            .spotlight.style1 .image img {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 300px !important;
+            }
+        }
+        
+        /* 滾動進度條 */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            z-index: 10000;
+        }
+        
+        .progress-bar .progress {
+            height: 100%;
+            background: linear-gradient(to right, #4ecdc4, #44a08d);
+            transition: width 0.3s ease;
+        }
+        
+        /* 時間軸樣式 */
+        .timeline {
+            margin: 2rem 0;
+        }
+        
+        .timeline-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            border-left: 4px solid #4ecdc4;
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 統計數字強調 */
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            display: block;
+        }
+        
+        /* 教師照片樣式 */
+        .teacher-photo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 4px solid #4ecdc4;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+        
+        .teacher-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .teacher-photo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+            border-color: #44a08d;
+        }
+        
+        .teacher-photo:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* 響應式教師照片 */
+        @media screen and (max-width: 736px) {
+            .teacher-photo {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        /* 實踐案例標題與教師頭像容器 */
+        .case-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* 實踐案例教師小頭像 */
+        .case-teacher-photo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 3px solid #4ecdc4;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            flex-shrink: 0;
+        }
+        
+        .case-teacher-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .case-teacher-photo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(78, 205, 196, 0.3);
+            border-color: #44a08d;
+        }
+        
+        .case-teacher-photo:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* 實踐案例標題容器樣式 */
+        .case-title-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        
+        /* 主標題樣式（實踐案例編號）*/
+        .case-title-main {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            line-height: 1.2;
+        }
+        
+        /* 副標題樣式（學校和項目名稱）*/
+        .case-title-sub {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: inherit;
+            line-height: 1.3;
+        }
+        
+        /* 確保標題在flex容器中保持原本樣式 */
+        .case-header h2 {
+            margin: 0;
+            flex: 1;
+        }
+        
+        /* 響應式實踐案例教師照片 */
+        @media screen and (max-width: 980px) {
+            .case-teacher-photo {
+                width: 70px;
+                height: 70px;
+            }
+        }
+        
+        @media screen and (max-width: 736px) {
+            .case-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .case-teacher-photo {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* 手機版標題樣式調整 */
+            .case-title-main {
+                font-size: 1.5rem;
+            }
+            
+            .case-title-sub {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <!-- 滾動進度條 -->
+    <div class="progress-bar">
+        <div class="progress"></div>
+    </div>
+
+    <!-- Wrapper -->
+    <div id="wrapper" class="divided">
+
+        <!-- Banner: AISI 平台介紹 (第1頁) -->
+        <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+            <div class="content">
+                <h1>AISI 助你i教學</h1>
+                <p class="major">運用科技重新定義師生角色的智慧學習平台</p>
+                <p><strong>學生成為學習主體</strong>，根據個人基礎主動調整學習方向與步調</p>
+                <p><strong>教師轉為定向者</strong>，與AI共同備課，提供學生個人化引導確保達成教學目標</p>
+                <p>AISI團隊致力於兼顧個人化學習彈性與教育系統性，讓學生享有自主學習自由度的同時，仍在教師專業引導下掌握關鍵學習點，建構完整知識體系。</p>
+                <ul class="actions stacked">
+                    <li><a href="#core-concept" class="button big wide smooth-scroll-middle">開始探索</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="front-image.JPG" alt="AISI 智慧學習平台" />
+            </div>
+        </section>
+
+        <!-- Banner: 核心理念 (第2頁) -->
+        <section class="banner style1 orient-right content-align-left image-position-left onload-image-fade-in onload-content-fade-left" id="core-concept">
+            <div class="content">
+                <h2>AISI團隊的核心理念</h2>
+                <p class="major">促進學生的自主學習，關注三大學習面向</p>
+                <div class="box">
+                    <h3>🧠 媒體識讀</h3>
+                    <p>培養學生具備資訊倫理與批判性思考能力，在資訊洪流中能夠獨立判斷、理性分析</p>
+                </div>
+                <div class="box">
+                    <h3>🌐 跨領域知識</h3>
+                    <p>設計教案整合社會文化脈絡與國家政策、科學知識，讓學習不再是孤立的學科割裂</p>
+                </div>
+                <div class="box">
+                    <h3>💭 思考技能</h3>
+                    <p>發展活動培養問題解決能力，鼓勵自主學習與深度反思，讓學生從被動接收轉為主動探索</p>
+                </div>
+                <ul class="actions stacked">
+                    <li><a href="#teaching-dimension" class="button smooth-scroll-middle">了解教學維度</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="core-idea.jpg" alt="AISI 核心理念" />
+            </div>
+        </section>
+
+        <!-- Banner: 教學維度 (第3頁) -->
+        <section class="banner style1 orient-left content-align-left image-position-right onload-image-fade-in onload-content-fade-right" id="teaching-dimension">
+            <div class="content">
+                <h2>教與學的維度</h2>
+                <p class="major">四個關鍵維度重新定義教育模式</p>
+                <ul>
+                    <li><strong>設計跨域教材</strong>：讓學生自學建立基礎</li>
+                    <li><strong>提供鷹架學習</strong>：教師導學與關鍵能力的辨識</li>
+                    <li><strong>AI輔助個人化學習</strong>：學生利用AI系統獲得即時回饋，強化自我調節學習力</li>
+                    <li><strong>組內與組間共學</strong>：溝通、共情、創意的培養</li>
+                </ul>
+                <ul class="actions stacked">
+                    <li><a href="#practice-cases" class="button smooth-scroll-middle">查看實踐案例</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="dimension.jpg" alt="教與學的維度" />
+            </div>
+        </section>
+
+        <!-- 實踐案例區塊開始 -->
+        <section class="wrapper style1 align-center" id="practice-cases">
+            <div class="inner">
+                <h2>AISI 實踐案例</h2>
+                <p>透過真實教學場域的應用，展現 AISI 平台的教育創新成果</p>
+            </div>
+        </section>
+
+        <!-- 實踐案例(一)：福和國中x媒玩媒暸 (第4頁) -->
+        <section class="banner style1 orient-right content-align-left image-position-left onload-image-fade-in onload-content-fade-left">
+            <div class="content">
+                <div class="case-header">
+                    <div class="case-title-container">
+                        <h2 class="case-title-main">實踐案例(一)</h2>
+                        <h3 class="case-title-sub">福和國中x媒玩媒暸</h3>
+                    </div>
+                    <div class="case-teacher-photo">
+                        <img src="batty.png" alt="美鳳老師" />
+                    </div>
+                </div>
+                <p class="major">以媒體識讀為核心的創新教學</p>
+                <p>福和國中校本課程《媒玩媒暸》以媒體識讀為核心，結合閱讀素養與資訊倫理，培養學生批判思維與數位公民素養。聚焦大眾媒體與自媒體識讀，涵蓋新聞閱讀、假訊息辨識、網紅現象及標題操弄等議題課程。</p>
+                <div class="box">
+                    <h3>🎯 創新亮點</h3>
+                    <p>美鳳老師導入AISI系統搭配「Think Forge」平台，透過AI對話提供即時提示與學習建議，協助學生釐清思路、重建邏輯。</p>
+                </div>
+                <p>這種數位輔助設計實踐「教、學、評」整合，讓AI成為助學夥伴，引導學生從被動接收轉為主動參與，建構具思辨力的現代閱聽人。</p>
+                <ul class="actions stacked">
+                    <li><a href="#practice-2" class="button smooth-scroll-middle">下一個案例</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="reading.JPG" alt="媒體識讀教學" />
+            </div>
+        </section>
+
+        <!-- 實踐案例(二)：福和國中xSDGs營隊 (第5頁) -->
+        <section class="banner style1 orient-left content-align-left image-position-right onload-image-fade-in onload-content-fade-right" id="practice-2">
+            <div class="content">
+                <div class="case-header">
+                    <div class="case-title-container">
+                        <h2 class="case-title-main">實踐案例(二)</h2>
+                        <h3 class="case-title-sub">福和國中xSDGs營隊</h3>
+                    </div>
+                    <div class="case-teacher-photo">
+                        <img src="ez.png" alt="易辰老師" />
+                    </div>
+                </div>
+                <p class="major">跨年齡支援的差異化學習</p>
+                <p>AISI平台的跨年齡支援能力是重要特色，針對不同學習階段提供差異化支援。國中學生雖具學習動機與好奇心，但因經驗不足，缺乏即時適切回饋，且在自主學習能力初期培養階段，常不理解真正的學習。</p>
+                <div class="box">
+                    <h3>🌱 學習支援</h3>
+                    <p>AISI如多元學習顧問，提供替代經驗與知識，引導學生成為負責任的社會公民。</p>
+                </div>
+                <p>AISI團隊以「淨零碳排」為SDGs學習媒材，設計融合科學、科技與公民社會的自主學習課程。</p>
+                <ul class="actions stacked">
+                    <li><a href="#practice-3" class="button smooth-scroll-middle">下一個案例</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="report.JPG" alt="SDGs營隊" />
+            </div>
+        </section>
+
+        <!-- 實踐案例(三)：土城國中x鐵達尼號中的科學 (第6頁) -->
+        <section class="banner style1 orient-right content-align-left image-position-left onload-image-fade-in onload-content-fade-left" id="practice-3">
+            <div class="content">
+                <div class="case-header">
+                    <div class="case-title-container">
+                        <h2 class="case-title-main">實踐案例(三)</h2>
+                        <h3 class="case-title-sub">土城國中x鐵達尼號中的科學</h3>
+                    </div>
+                    <div class="case-teacher-photo">
+                        <img src="shengyi.png" alt="聖益老師" />
+                    </div>
+                </div>
+                <p class="major">抽象概念的情境化學習</p>
+                <p>國中學生進入形式運思期，開始運用抽象概念解釋科學現象，但常因概念複雜而在課堂中成為旁觀者，自主學習時迷失方向。AISI具備高度適性化與即時回應特性，教師可根據課程調整回應模式。</p>
+                <div class="box">
+                    <h3>🔬 科學推理</h3>
+                    <p>涵蓋推理論證、批判思辨等面向，運用AISI逐步引導學生將抽象概念內化。</p>
+                </div>
+                <p>聖益老師以鐵達尼號撞冰山事件為主題，將國中生容易遇到困難的力學概念深度融入情境中，讓學生透過推理論證、批判思辨、建立模型等思考智能，探討鐵達尼號航運途中、沉沒過程及沉沒後的抽象科學概念。</p>
+                <ul class="actions stacked">
+                    <li><a href="#practice-4" class="button smooth-scroll-middle">下一個案例</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="science.JPG" alt="鐵達尼號科學課程" />
+            </div>
+        </section>
+
+        <!-- 實踐案例(四)：內湖高中x深化問題解決與探究能力 (第7頁) -->
+        <section class="banner style1 orient-left content-align-left image-position-right onload-image-fade-in onload-content-fade-right" id="practice-4">
+            <div class="content">
+                <div class="case-header">
+                    <div class="case-title-container">
+                        <h2 class="case-title-main">實踐案例(四)</h2>
+                        <h3 class="case-title-sub">內湖高中x深化問題解決與探究能力</h3>
+                    </div>
+                    <div class="case-teacher-photo">
+                        <img src="ez.png" alt="易辰老師" />
+                    </div>
+                </div>
+                <p class="major">科學探究的AI輔助學習</p>
+                <p>高中生雖具科學知識基礎，但缺乏動手操作機會，問題解決技能練習不足。即使學校提供探究實作機會，學生仍面臨不知如何開始、調整或評估問題解決效果等困境。</p>
+                <div class="box">
+                    <h3>🤖 AI 科學楷模</h3>
+                    <p>AISI內建科學探究聊天機器人，扮演不同領域的專家楷模，協助學生剖析問題結構，練習科學方法的應用。</p>
+                </div>
+                <p>高生產力的溝通互動十分仰賴問題意識與批判思考。有別於一般生成式AI單純獲取資訊，易辰老師的探究實作課程鼓勵學生主動嘗試，親自體驗AI建議與自己想法差異，在評量新舊知識同時練習與科技互動，同步培養軟硬實力。</p>
+                <ul class="actions stacked">
+                    <li><a href="#team-members" class="button smooth-scroll-middle">認識團隊</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="inquiry.jpg" alt="探究與實作" />
+            </div>
+        </section>
+
+        <!-- 團隊成員 Items Grid (第8頁) -->
+        <section class="wrapper style1 align-center" id="team-members">
+            <div class="inner">
+                <h2>AISI團隊成員</h2>
+                <p>結合教育現場經驗與學術研究能量的專業團隊</p>
+                <div class="items style1 medium onscroll-fade-in">
+                    <!-- 易辰老師 -->
+                    <section>
+                        <div class="teacher-photo">
+                            <img src="ez.png" alt="易辰老師" />
+                        </div>
+                        <h3>易辰老師</h3>
+                        <p><strong>臺北內湖高中</strong></p>
+                        <p>專精科學探究與實作課程設計，致力於培養學生問題解決能力。</p>
+                    </section>
+                    <!-- 美鳳老師 -->
+                    <section>
+                        <div class="teacher-photo">
+                            <img src="batty.png" alt="美鳳老師" />
+                        </div>
+                        <h3>美鳳老師</h3>
+                        <p><strong>新北福和國中</strong></p>
+                        <p>專精媒體識讀與閱讀素養，設計創新教學模式培養學生批判思維與數位公民素養。</p>
+                    </section>
+                    <!-- 聖益老師 -->
+                    <section>
+                        <div class="teacher-photo">
+                            <img src="shengyi.png" alt="聖益老師" />
+                        </div>
+                        <h3>聖益老師</h3>
+                        <p><strong>新北土城國中</strong></p>
+                        <p>情境化科學教學創新者，善於將抽象概念融入生活情境，提升學習效果。</p>
+                    </section>
+                    <section>
+                        <span class="icon solid style2 major fa-brain"></span>
+                        <h3>開發與指導團隊</h3>
+                        <ul style="text-align: left; display: inline-block;">
+                            <li><strong>隋奇融研究員</strong> - 國教院</li>
+                            <li><strong>張俊彥教授</strong> - 臺師大</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <span class="icon solid style2 major fa-users"></span>
+                        <h3>協作理念</h3>
+                        <p>結合教育現場實務經驗與學術研究理論，共同打造適合台灣教育環境的AI輔助學習平台。</p>
+                    </section>
+                    <section>
+                        <span class="icon solid style2 major fa-lightbulb"></span>
+                        <h3>創新精神</h3>
+                        <p>持續探索教育科技的新可能，以學生為中心設計學習體驗，培養21世紀所需的關鍵能力。</p>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <!-- 里程碑時間軸 Wrapper (第9頁) -->
+        <section class="wrapper style1 align-center" id="milestones">
+            <div class="inner">
+                <h2>AISI里程碑</h2>
+                <p>從理念到實踐，見證教育創新的每一步</p>
+                
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <h3 style="margin-bottom: 2rem;">發展歷程</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024.01</div>
+                            <p><strong>AISI建立</strong> - 智慧學習平台正式啟動</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024.06</div>
+                            <p><strong>AISI荷蘭推廣</strong> - 國際教育交流，分享台灣創新經驗</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.01</div>
+                            <p><strong>易辰老師/福和國中資優營隊《SDGs》</strong> - 跨領域學習實踐</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.01</div>
+                            <p><strong>新北福和國中簽訂 MOU</strong> - 正式合作夥伴關係建立</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.02</div>
+                            <p><strong>易辰老師/內湖高中《探究與實作》</strong> - 高中科學教育創新</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.04</div>
+                            <p><strong>美鳳老師/福和國中校本課程《媒玩媒暸》</strong> - 媒體識讀深化</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.04</div>
+                            <p><strong>聖益老師/土城國中科學課程《鐵達尼號》</strong> - 情境化科學學習</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.04</div>
+                            <p><strong>新北市教育局簽訂MOU</strong> - 區域教育合作擴大</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 3rem;">
+                        <h3>學習成果</h3>
+                        <div style="background: rgba(78,205,196,0.1); padding: 2rem; border-radius: 1rem; margin-top: 1rem;">
+                            <span class="stats-number">300+</span>
+                            <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; font-weight: bold;">使用AISI在課堂上學習的學生數</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact: 加入 AISI 呼籲 (第10頁) -->
+        <section class="wrapper style1 align-center" id="join-aisi">
+            <div class="inner medium">
+                <h2>加入AISI教育創新</h2>
+                <p class="major">AISI智慧學習平台正在重塑教育的未來</p>
+                <p>透過科技與教育的深度融合，我們致力於培養21世紀所需的批判思考、問題解決與協作能力。</p>
+                
+                <div style="background: linear-gradient(135deg, #4ecdc4, #44a08d); padding: 3rem; border-radius: 1rem; margin: 2rem 0; color: white;">
+                    <h3 style="color: white; margin-bottom: 1rem;">立即體驗AISI，開啟教育新篇章！</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">開始使用：<strong>aisi.tw</strong></p>
+                    <ul class="actions special">
+                        <li><a href="https://aisi.tw" class="button large" style="background: white; color: #4ecdc4; font-weight: bold;">前往 AISI 平台</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="wrapper style1 align-center">
+            <div class="inner">
+                <p>&copy; 2025 AISI 助你i教學. 設計: <a href="https://html5up.net">HTML5 UP</a>.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- 共用JavaScript資源 - 使用 ../ 指向上層目錄 -->
+    <script src="../story-temp/assets/js/jquery.min.js"></script>
+    <script src="../story-temp/assets/js/jquery.scrollex.min.js"></script>
+    <script src="../story-temp/assets/js/jquery.scrolly.min.js"></script>
+    <script src="../story-temp/assets/js/browser.min.js"></script>
+    <script src="../story-temp/assets/js/breakpoints.min.js"></script>
+    <script src="../story-temp/assets/js/util.js"></script>
+    <script src="../story-temp/assets/js/main.js"></script>
+    
+    <!-- 自訂JavaScript -->
+    <script>
+        // 滾動進度計算
+        $(window).scroll(function() {
+            var scrolled = ($(window).scrollTop() / ($(document).height() - $(window).height())) * 100;
+            $('.progress').css('width', scrolled + '%');
+        });
+    </script>
+
+</body>
+</html>
