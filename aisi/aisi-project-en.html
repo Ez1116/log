@@ -1,0 +1,650 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>AISI Smart Learning Platform - Intelligent Educational Technology</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <meta name="description" content="AISI Smart Learning Platform uses technology to redefine teacher-student roles, cultivating students' autonomous learning abilities and critical thinking skills" />
+    <!-- Shared CSS resources - using ../ to point to parent directory -->
+    <link rel="stylesheet" href="../story-temp/assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="../story-temp/assets/css/noscript.css" /></noscript>
+    
+    <!-- Custom styles: Optimize image display, avoid cropping -->
+    <style>
+        /* All images use contain rather than cover to avoid cropping */
+        .banner.style1 .image img,
+        .spotlight.style1 .image img {
+            -moz-object-fit: contain !important;
+            -webkit-object-fit: contain !important;
+            -ms-object-fit: contain !important;
+            object-fit: contain !important;
+            -moz-object-position: center !important;
+            -webkit-object-position: center !important;
+            -ms-object-position: center !important;
+            object-position: center !important;
+        }
+        
+        /* Change image container background to white, overriding default gray background */
+        .banner.style1 .image,
+        .spotlight.style1 .image {
+            background-color: #ffffff !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        
+        /* Page outer border: let content naturally center */
+        body {
+            padding: 0 2.5% !important;
+            box-sizing: border-box !important;
+        }
+        
+        #wrapper {
+            max-width: none !important;
+            margin: 0 !important;
+        }
+        
+        /* Ensure all sections have unified margin handling */
+        .banner, .spotlight, .wrapper {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        
+        /* Ensure text remains left-aligned */
+        .banner.style1 .content,
+        .spotlight.style1 .content {
+            text-align: left !important;
+        }
+        
+        /* Banner cover section: adjust to 45%-55% ratio, adapted for front-image.JPG */
+        .banner.style1 .content {
+            width: 55% !important;
+        }
+        
+        .banner.style1 .image {
+            width: 45% !important;
+        }
+        
+        /* Core concept section image scaled 1.5x */
+        #core-concept .banner.style1 .image img {
+            transform: scale(1.5) !important;
+            transform-origin: center !important;
+        }
+        
+        
+        
+        /* Responsive design: tablet size */
+        @media screen and (max-width: 1280px) {
+            .banner.style1 .content,
+            .spotlight.style1 .content {
+                width: 50% !important;
+            }
+            
+            .banner.style1 .image,
+            .spotlight.style1 .image {
+                width: 50% !important;
+            }
+        }
+        
+        /* Responsive design: mobile size */
+        @media screen and (max-width: 736px) {
+            .banner.style1,
+            .spotlight.style1 {
+                flex-direction: column !important;
+            }
+            
+            .banner.style1 .content,
+            .banner.style1 .image,
+            .spotlight.style1 .content,
+            .spotlight.style1 .image {
+                width: 100% !important;
+            }
+            
+            .banner.style1 .image,
+            .spotlight.style1 .image {
+                max-height: 300px !important;
+            }
+            
+            .banner.style1 .image img,
+            .spotlight.style1 .image img {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 300px !important;
+            }
+        }
+        
+        /* Scrolling progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            z-index: 10000;
+        }
+        
+        .progress-bar .progress {
+            height: 100%;
+            background: linear-gradient(to right, #4ecdc4, #44a08d);
+            transition: width 0.3s ease;
+        }
+        
+        /* Timeline styles */
+        .timeline {
+            margin: 2rem 0;
+        }
+        
+        .timeline-item {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            border-left: 4px solid #4ecdc4;
+        }
+        
+        .timeline-date {
+            font-weight: bold;
+            color: #4ecdc4;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Statistical number emphasis */
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            display: block;
+        }
+        
+        /* Teacher photo styles */
+        .teacher-photo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 1.5rem auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 4px solid #4ecdc4;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+        
+        .teacher-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .teacher-photo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(78, 205, 196, 0.3);
+            border-color: #44a08d;
+        }
+        
+        .teacher-photo:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Responsive teacher photos */
+        @media screen and (max-width: 736px) {
+            .teacher-photo {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        /* Case study title and teacher avatar container */
+        .case-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Case study teacher small avatar */
+        .case-teacher-photo {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 3px solid #4ecdc4;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            flex-shrink: 0;
+        }
+        
+        .case-teacher-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .case-teacher-photo:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(78, 205, 196, 0.3);
+            border-color: #44a08d;
+        }
+        
+        .case-teacher-photo:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Case study title container styles */
+        .case-title-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        
+        /* Main title style (case study number) */
+        .case-title-main {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4ecdc4;
+            line-height: 1.2;
+        }
+        
+        /* Subtitle style (school and project name) */
+        .case-title-sub {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: inherit;
+            line-height: 1.3;
+        }
+        
+        /* Ensure titles maintain original style in flex container */
+        .case-header h2 {
+            margin: 0;
+            flex: 1;
+        }
+        
+        /* Responsive case study teacher photos */
+        @media screen and (max-width: 980px) {
+            .case-teacher-photo {
+                width: 70px;
+                height: 70px;
+            }
+        }
+        
+        @media screen and (max-width: 736px) {
+            .case-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+            
+            .case-teacher-photo {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* Mobile title style adjustments */
+            .case-title-main {
+                font-size: 1.5rem;
+            }
+            
+            .case-title-sub {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body class="is-preload">
+
+    <!-- Scrolling progress bar -->
+    <div class="progress-bar">
+        <div class="progress"></div>
+    </div>
+
+    <!-- Wrapper -->
+    <div id="wrapper" class="divided">
+
+        <!-- Banner: AISI Platform Introduction (Page 1) -->
+        <section class="banner style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right">
+            <div class="content">
+                <h1>AISI Smart Learning</h1>
+                <p class="major">An intelligent learning platform that redefines teacher-student roles through technology</p>
+                <p><strong>Students become the main agents of learning</strong>, actively adjusting their learning direction and pace based on their individual foundation</p>
+                <p><strong>Teachers transform into facilitators</strong>, collaborating with AI in lesson preparation to provide personalized guidance and ensure achievement of learning objectives</p>
+                <p>The AISI team is dedicated to balancing personalized learning flexibility with educational systematicity, allowing students to enjoy the freedom of autonomous learning while still mastering key learning points under professional teacher guidance to construct a complete knowledge system.</p>
+                <ul class="actions stacked">
+                    <li><a href="#core-concept" class="button big wide smooth-scroll-middle">Start Exploring</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="front-image.JPG" alt="AISI Smart Learning Platform" />
+            </div>
+        </section>
+
+        <!-- Banner: Core Concept (Page 2) -->
+        <section class="banner style1 orient-right content-align-left image-position-left onload-image-fade-in onload-content-fade-left" id="core-concept">
+            <div class="content">
+                <h2>AISI Team's Core Philosophy</h2>
+                <p class="major">Promoting student autonomous learning, focusing on three key learning dimensions</p>
+                <div class="box">
+                    <h3>🧠 Media Literacy</h3>
+                    <p>Cultivating students' information ethics and critical thinking abilities, enabling them to make independent judgments and rational analysis in the flood of information</p>
+                </div>
+                <div class="box">
+                    <h3>🌐 Interdisciplinary Knowledge</h3>
+                    <p>Designing curricula that integrate social-cultural context with national policies and scientific knowledge, making learning no longer isolated subject fragmentation</p>
+                </div>
+                <div class="box">
+                    <h3>💭 Thinking Skills</h3>
+                    <p>Developing activities that cultivate problem-solving abilities, encouraging autonomous learning and deep reflection, transforming students from passive recipients to active explorers</p>
+                </div>
+                <ul class="actions stacked">
+                    <li><a href="#teaching-dimension" class="button smooth-scroll-middle">Learn About Teaching Dimensions</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="core-idea.jpg" alt="AISI Core Philosophy" />
+            </div>
+        </section>
+
+        <!-- Banner: Teaching Dimensions (Page 3) -->
+        <section class="banner style1 orient-left content-align-left image-position-right onload-image-fade-in onload-content-fade-right" id="teaching-dimension">
+            <div class="content">
+                <h2>Dimensions of Teaching and Learning</h2>
+                <p class="major">Four key dimensions redefining educational models</p>
+                <ul>
+                    <li><strong>Design Interdisciplinary Materials</strong>: Enabling students to build foundations through self-learning</li>
+                    <li><strong>Provide Scaffolding Learning</strong>: Teacher-guided learning and identification of key competencies</li>
+                    <li><strong>AI-Assisted Personalized Learning</strong>: Students use AI systems to receive immediate feedback, enhancing self-regulated learning capabilities</li>
+                    <li><strong>Intra-group and Inter-group Collaborative Learning</strong>: Cultivating communication, empathy, and creativity</li>
+                </ul>
+                <ul class="actions stacked">
+                    <li><a href="#practice-cases" class="button smooth-scroll-middle">View Implementation Cases</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="dimension.jpg" alt="Dimensions of Teaching and Learning" />
+            </div>
+        </section>
+
+        <!-- Implementation Cases Section Start -->
+        <section class="wrapper style1 align-center" id="practice-cases">
+            <div class="inner">
+                <h2>AISI Implementation Cases</h2>
+                <p>Demonstrating AISI platform's educational innovation achievements through real teaching field applications</p>
+            </div>
+        </section>
+
+        <!-- Implementation Case (1): Fuhe Junior High x Media Literacy (Page 4) -->
+        <section class="banner style1 orient-right content-align-left image-position-left onload-image-fade-in onload-content-fade-left">
+            <div class="content">
+                <div class="case-header">
+                    <div class="case-title-container">
+                        <h2 class="case-title-main">Implementation Case (1)</h2>
+                        <h3 class="case-title-sub">Fuhe Junior High x Media Play Media Literacy</h3>
+                    </div>
+                    <div class="case-teacher-photo">
+                        <img src="batty.png" alt="Teacher Meifeng" />
+                    </div>
+                </div>
+                <p class="major">Innovative teaching centered on media literacy</p>
+                <p>Fuhe Junior High's school-based curriculum "Media Play Media Literacy" is centered on media literacy, combining reading literacy and information ethics to cultivate students' critical thinking and digital citizenship. It focuses on mass media and social media literacy, covering issues such as news reading, fake news identification, influencer phenomena, and headline manipulation.</p>
+                <div class="box">
+                    <h3>🎯 Innovation Highlights</h3>
+                    <p>Teacher Meifeng introduced the AISI system paired with the "Think Forge" platform, providing immediate prompts and learning suggestions through AI dialogue to help students clarify their thinking and reconstruct logic.</p>
+                </div>
+                <p>This digital-assisted design realizes the integration of "teaching, learning, and assessment," making AI a learning partner that guides students from passive reception to active participation, building thoughtful modern media consumers.</p>
+                <ul class="actions stacked">
+                    <li><a href="#practice-2" class="button smooth-scroll-middle">Next Case</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="reading.JPG" alt="Media Literacy Teaching" />
+            </div>
+        </section>
+
+        <!-- Implementation Case (2): Fuhe Junior High x SDGs Camp (Page 5) -->
+        <section class="banner style1 orient-left content-align-left image-position-right onload-image-fade-in onload-content-fade-right" id="practice-2">
+            <div class="content">
+                <div class="case-header">
+                    <div class="case-title-container">
+                        <h2 class="case-title-main">Implementation Case (2)</h2>
+                        <h3 class="case-title-sub">Fuhe Junior High x SDGs Camp</h3>
+                    </div>
+                    <div class="case-teacher-photo">
+                        <img src="ez.png" alt="Teacher Yichen" />
+                    </div>
+                </div>
+                <p class="major">Cross-age differentiated learning support</p>
+                <p>AISI platform's cross-age support capability is an important feature, providing differentiated support for different learning stages. While junior high students have learning motivation and curiosity, they lack immediate appropriate feedback due to insufficient experience and often don't understand true learning during the early stages of autonomous learning ability cultivation.</p>
+                <div class="box">
+                    <h3>🌱 Learning Support</h3>
+                    <p>AISI serves as a diverse learning consultant, providing alternative experiences and knowledge to guide students in becoming responsible social citizens.</p>
+                </div>
+                <p>The AISI team designed autonomous learning courses integrating science, technology, and civil society using "Net Zero Carbon Emissions" as SDGs learning materials.</p>
+                <ul class="actions stacked">
+                    <li><a href="#practice-3" class="button smooth-scroll-middle">Next Case</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="report.JPG" alt="SDGs Camp" />
+            </div>
+        </section>
+
+        <!-- Implementation Case (3): Tucheng Junior High x Science in Titanic (Page 6) -->
+        <section class="banner style1 orient-right content-align-left image-position-left onload-image-fade-in onload-content-fade-left" id="practice-3">
+            <div class="content">
+                <div class="case-header">
+                    <div class="case-title-container">
+                        <h2 class="case-title-main">Implementation Case (3)</h2>
+                        <h3 class="case-title-sub">Tucheng Junior High x Science in Titanic</h3>
+                    </div>
+                    <div class="case-teacher-photo">
+                        <img src="shengyi.png" alt="Teacher Shengyi" />
+                    </div>
+                </div>
+                <p class="major">Contextualized learning of abstract concepts</p>
+                <p>Junior high students entering the formal operational stage begin using abstract concepts to explain scientific phenomena, but often become observers in class due to complex concepts, losing direction during autonomous learning. AISI has highly adaptive and real-time response characteristics, allowing teachers to adjust response modes according to curriculum needs.</p>
+                <div class="box">
+                    <h3>🔬 Scientific Reasoning</h3>
+                    <p>Covering aspects such as reasoning argumentation and critical thinking, using AISI to gradually guide students in internalizing abstract concepts.</p>
+                </div>
+                <p>Teacher Shengyi used the Titanic iceberg collision incident as the theme, deeply integrating mechanics concepts that junior high students often find difficult into contextual scenarios, allowing students to explore abstract scientific concepts during the Titanic's voyage, sinking process, and post-sinking through reasoning argumentation, critical thinking, model building, and other cognitive skills.</p>
+                <ul class="actions stacked">
+                    <li><a href="#practice-4" class="button smooth-scroll-middle">Next Case</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="science.JPG" alt="Titanic Science Course" />
+            </div>
+        </section>
+
+        <!-- Implementation Case (4): Neihu Senior High x Enhancing Problem-Solving and Inquiry Abilities (Page 7) -->
+        <section class="banner style1 orient-left content-align-left image-position-right onload-image-fade-in onload-content-fade-right" id="practice-4">
+            <div class="content">
+                <div class="case-header">
+                    <div class="case-title-container">
+                        <h2 class="case-title-main">Implementation Case (4)</h2>
+                        <h3 class="case-title-sub">Neihu Senior High x Enhancing Problem-Solving and Inquiry Abilities</h3>
+                    </div>
+                    <div class="case-teacher-photo">
+                        <img src="ez.png" alt="Teacher Yichen" />
+                    </div>
+                </div>
+                <p class="major">AI-assisted learning for scientific inquiry</p>
+                <p>While high school students have a foundation in scientific knowledge, they lack hands-on operational opportunities and insufficient practice in problem-solving skills. Even when schools provide inquiry and practice opportunities, students still face difficulties such as not knowing how to start, adjust, or evaluate problem-solving effectiveness.</p>
+                <div class="box">
+                    <h3>🤖 AI Scientific Role Models</h3>
+                    <p>AISI features built-in scientific inquiry chatbots that play expert role models from different fields, helping students analyze problem structures and practice the application of scientific methods.</p>
+                </div>
+                <p>High-productivity communicative interaction relies heavily on problem awareness and critical thinking. Unlike general generative AI that simply obtains information, Teacher Yichen's inquiry and practice courses encourage students to actively try and personally experience the differences between AI suggestions and their own ideas, practicing interaction with technology while evaluating new and old knowledge, simultaneously developing both soft and hard skills.</p>
+                <ul class="actions stacked">
+                    <li><a href="#team-members" class="button smooth-scroll-middle">Meet the Team</a></li>
+                </ul>
+            </div>
+            <div class="image">
+                <img src="inquiry.jpg" alt="Inquiry and Practice" />
+            </div>
+        </section>
+
+        <!-- Team Members Items Grid (Page 8) -->
+        <section class="wrapper style1 align-center" id="team-members">
+            <div class="inner">
+                <h2>AISI Team Members</h2>
+                <p>A professional team combining educational field experience with academic research energy</p>
+                <div class="items style1 medium onscroll-fade-in">
+                    <!-- Teacher Yichen -->
+                    <section>
+                        <div class="teacher-photo">
+                            <img src="ez.png" alt="Teacher Yichen" />
+                        </div>
+                        <h3>Teacher Yichen</h3>
+                        <p><strong>Taipei Neihu Senior High School</strong></p>
+                        <p>Specializes in scientific inquiry and practice curriculum design, dedicated to cultivating students' problem-solving abilities.</p>
+                    </section>
+                    <!-- Teacher Meifeng -->
+                    <section>
+                        <div class="teacher-photo">
+                            <img src="batty.png" alt="Teacher Meifeng" />
+                        </div>
+                        <h3>Teacher Meifeng</h3>
+                        <p><strong>New Taipei Fuhe Junior High School</strong></p>
+                        <p>Specializes in media literacy and reading literacy, designing innovative teaching models to cultivate students' critical thinking and digital citizenship.</p>
+                    </section>
+                    <!-- Teacher Shengyi -->
+                    <section>
+                        <div class="teacher-photo">
+                            <img src="shengyi.png" alt="Teacher Shengyi" />
+                        </div>
+                        <h3>Teacher Shengyi</h3>
+                        <p><strong>New Taipei Tucheng Junior High School</strong></p>
+                        <p>Contextualized science teaching innovator, skilled at integrating abstract concepts into life contexts to enhance learning effectiveness.</p>
+                    </section>
+                    <section>
+                        <span class="icon solid style2 major fa-brain"></span>
+                        <h3>Development and Advisory Team</h3>
+                        <ul style="text-align: left; display: inline-block;">
+                            <li><strong>Researcher Sui Qirong</strong> - National Academy for Educational Research</li>
+                            <li><strong>Professor Zhang Junyan</strong> - National Taiwan Normal University</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <span class="icon solid style2 major fa-users"></span>
+                        <h3>Collaborative Philosophy</h3>
+                        <p>Combining educational field practical experience with academic research theory to jointly create an AI-assisted learning platform suitable for Taiwan's educational environment.</p>
+                    </section>
+                    <section>
+                        <span class="icon solid style2 major fa-lightbulb"></span>
+                        <h3>Innovation Spirit</h3>
+                        <p>Continuously exploring new possibilities in educational technology, designing student-centered learning experiences to cultivate key competencies needed for the 21st century.</p>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <!-- Milestone Timeline Wrapper (Page 9) -->
+        <section class="wrapper style1 align-center" id="milestones">
+            <div class="inner">
+                <h2>AISI Milestones</h2>
+                <p>From concept to practice, witnessing every step of educational innovation</p>
+                
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <h3 style="margin-bottom: 2rem;">Development Timeline</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024.01</div>
+                            <p><strong>AISI Establishment</strong> - Smart learning platform officially launched</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2024.06</div>
+                            <p><strong>AISI Netherlands Promotion</strong> - International educational exchange, sharing Taiwan's innovative experience</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.01</div>
+                            <p><strong>Teacher Yichen/Fuhe Junior High Gifted Camp "SDGs"</strong> - Interdisciplinary learning practice</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.01</div>
+                            <p><strong>New Taipei Fuhe Junior High MOU Signed</strong> - Official partnership established</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.02</div>
+                            <p><strong>Teacher Yichen/Neihu Senior High "Inquiry and Practice"</strong> - High school science education innovation</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.04</div>
+                            <p><strong>Teacher Meifeng/Fuhe Junior High School-based Curriculum "Media Play Media Literacy"</strong> - Media literacy deepening</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.04</div>
+                            <p><strong>Teacher Shengyi/Tucheng Junior High Science Course "Titanic"</strong> - Contextualized science learning</p>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">2025.04</div>
+                            <p><strong>New Taipei City Department of Education MOU Signed</strong> - Regional educational cooperation expanded</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 3rem;">
+                        <h3>Learning Outcomes</h3>
+                        <div style="background: rgba(78,205,196,0.1); padding: 2rem; border-radius: 1rem; margin-top: 1rem;">
+                            <span class="stats-number">300+</span>
+                            <p style="margin: 0.5rem 0 0 0; font-size: 1.2rem; font-weight: bold;">Students using AISI for classroom learning</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact: Join AISI Call to Action (Page 10) -->
+        <section class="wrapper style1 align-center" id="join-aisi">
+            <div class="inner medium">
+                <h2>Join AISI Educational Innovation</h2>
+                <p class="major">AISI Smart Learning Platform is reshaping the future of education</p>
+                <p>Through the deep integration of technology and education, we are committed to cultivating the critical thinking, problem-solving, and collaborative skills needed for the 21st century.</p>
+                
+                <div style="background: linear-gradient(135deg, #4ecdc4, #44a08d); padding: 3rem; border-radius: 1rem; margin: 2rem 0; color: white;">
+                    <h3 style="color: white; margin-bottom: 1rem;">Experience AISI now and open a new chapter in education!</h3>
+                    <p style="font-size: 1.2rem; margin-bottom: 2rem;">Get started: <strong>aisi.tw</strong></p>
+                    <ul class="actions special">
+                        <li><a href="https://aisi.tw" class="button large" style="background: white; color: #4ecdc4; font-weight: bold;">Go to AISI Platform</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="wrapper style1 align-center">
+            <div class="inner">
+                <p>&copy; 2025 AISI Smart Learning. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Shared JavaScript resources - using ../ to point to parent directory -->
+    <script src="../story-temp/assets/js/jquery.min.js"></script>
+    <script src="../story-temp/assets/js/jquery.scrollex.min.js"></script>
+    <script src="../story-temp/assets/js/jquery.scrolly.min.js"></script>
+    <script src="../story-temp/assets/js/browser.min.js"></script>
+    <script src="../story-temp/assets/js/breakpoints.min.js"></script>
+    <script src="../story-temp/assets/js/util.js"></script>
+    <script src="../story-temp/assets/js/main.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Scrolling progress calculation
+        $(window).scroll(function() {
+            var scrolled = ($(window).scrollTop() / ($(document).height() - $(window).height())) * 100;
+            $('.progress').css('width', scrolled + '%');
+        });
+    </script>
+
+</body>
+</html>
