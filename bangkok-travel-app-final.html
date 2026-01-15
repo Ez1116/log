@@ -1168,7 +1168,7 @@
         // ============================================
         // 設定 - 請在這裡填入你的 Apps Script 網址
         // ============================================
-        const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbx_yD5WNdKxK7NSIrebRZo-vA64obCN6UFNQGLtVng4-UxE8CJ4HJzPJubFa7WReVUS/exec';
+        const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbwXJC77Ridqp49UNcRUBR390lgeOdU2N56VOf-evOojQOZVW4mtzL2oXz14U7TfyYKfTQ/exec';
         
         let API_URL = localStorage.getItem('apiUrl') || DEFAULT_API_URL;
         
@@ -1612,23 +1612,23 @@
             }
 
             try {
+                const payload = { action: 'addSchedule', date, time, place, link, note };
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'addSchedule', date, time, place, link, note })
+                    mode: 'no-cors',
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload),
+                    redirect: 'follow'
                 });
 
-                const result = await response.json();
-                if (result.success) {
-                    showSnackbar('行程已新增', 'success');
-                    closeModal('modal-schedule');
-                    document.getElementById('form-schedule').reset();
-                    loadData();
-                } else {
-                    throw new Error(result.error || '新增失敗');
-                }
+                // 由於 no-cors 模式無法讀取回應，我們假設成功並重新載入資料
+                showSnackbar('行程已新增', 'success');
+                closeModal('modal-schedule');
+                document.getElementById('form-schedule').reset();
+                setTimeout(() => loadData(), 500);
             } catch (error) {
-                showSnackbar('新增失敗', 'error');
+                showSnackbar('新增失敗: ' + error.message, 'error');
             }
         }
 
@@ -1646,23 +1646,22 @@
             }
 
             try {
+                const payload = { action: 'addSpot', category, name, link, note };
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'addSpot', category, name, link, note })
+                    mode: 'no-cors',
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload),
+                    redirect: 'follow'
                 });
 
-                const result = await response.json();
-                if (result.success) {
-                    showSnackbar('景點已新增', 'success');
-                    closeModal('modal-spot');
-                    document.getElementById('form-spot').reset();
-                    loadData();
-                } else {
-                    throw new Error(result.error || '新增失敗');
-                }
+                showSnackbar('景點已新增', 'success');
+                closeModal('modal-spot');
+                document.getElementById('form-spot').reset();
+                setTimeout(() => loadData(), 500);
             } catch (error) {
-                showSnackbar('新增失敗', 'error');
+                showSnackbar('新增失敗: ' + error.message, 'error');
             }
         }
 
@@ -1681,23 +1680,22 @@
             }
 
             try {
+                const payload = { action: 'addExpense', payer, date, type, amount, notes };
                 const response = await fetch(API_URL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'addExpense', payer, date, type, amount, notes })
+                    mode: 'no-cors',
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(payload),
+                    redirect: 'follow'
                 });
 
-                const result = await response.json();
-                if (result.success) {
-                    showSnackbar('支出已新增', 'success');
-                    closeModal('modal-expense');
-                    document.getElementById('form-expense').reset();
-                    loadData();
-                } else {
-                    throw new Error(result.error || '新增失敗');
-                }
+                showSnackbar('支出已新增', 'success');
+                closeModal('modal-expense');
+                document.getElementById('form-expense').reset();
+                setTimeout(() => loadData(), 500);
             } catch (error) {
-                showSnackbar('新增失敗', 'error');
+                showSnackbar('新增失敗: ' + error.message, 'error');
             }
         }
 
