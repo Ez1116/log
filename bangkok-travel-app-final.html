@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>曼谷打拳之旅</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Material You - Purple Theme */
+            --md-primary: #7C4DFF;
+            --md-on-primary: #FFFFFF;
+            --md-primary-container: #E8DDFF;
+            --md-on-primary-container: #2E004E;
+            
+            --md-secondary: #9C7CB5;
+            --md-on-secondary: #FFFFFF;
+            --md-secondary-container: #F3DAFF;
+            --md-on-secondary-container: #3B1E50;
+            
+            --md-tertiary: #FF8A80;
+            --md-on-tertiary: #FFFFFF;
+            --md-tertiary-container: #FFE5E0;
+            --md-on-tertiary-container: #5D1412;
+            
+            --md-surface: #FFFBFF;
+            --md-surface-dim: #E0D8E4;
+            --md-surface-bright: #FFFBFF;
+            --md-surface-container-lowest: #FFFFFF;
+            --md-surface-container-low: #F9F2FA;
+            --md-surface-container: #F3ECF4;
+            --md-surface-container-high: #EDE6EE;
+            --md-surface-container-highest: #E7E0E8;
+            
+            --md-on-surface: #1D1B20;
+            --md-on-surface-variant: #49454F;
+            --md-outline: #7A757F;
+            --md-outline-variant: #CBC4CF;
+            
+            --md-error: #BA1A1A;
+            --md-error-container: #FFDAD6;
+            --md-success: #006E2C;
+            --md-success-container: #95F9B3;
+
+            /* Elevation */
+            --md-elevation-1: 0 1px 3px 1px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.12);
+            --md-elevation-2: 0 2px 6px 2px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.12);
+            --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.12);
+            
+            /* Shape */
+            --md-shape-xs: 4px;
+            --md-shape-sm: 8px;
+            --md-shape-md: 12px;
+            --md-shape-lg: 16px;
+            --md-shape-xl: 28px;
+            --md-shape-full: 9999px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', 'Roboto', sans-serif;
+            background: linear-gradient(180deg, var(--md-surface) 0%, #F5F0FF 100%);
+            color: var(--md-on-surface);
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+
+        .material-symbols-rounded {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* ========== Top App Bar ========== */
+        .top-app-bar {
+            background: var(--md-surface);
+            padding: 12px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .app-bar-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .app-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--md-primary-container);
+            border-radius: var(--md-shape-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .app-title-text h1 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--md-on-surface);
+            letter-spacing: -0.2px;
+        }
+
+        .app-title-text .status {
+            font-size: 0.75rem;
+            color: var(--md-on-surface-variant);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: var(--md-shape-full);
+            background: var(--md-outline);
+        }
+
+        .status-indicator.connected {
+            background: var(--md-success);
+        }
+
+        .status-indicator.error {
+            background: var(--md-error);
+        }
+
+        /* Icon Button */
+        .icon-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--md-shape-full);
+            border: none;
+            background: transparent;
+            color: var(--md-on-surface-variant);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: var(--md-surface-container-highest);
+        }
+
+        .icon-btn:active {
+            background: var(--md-surface-container-high);
+        }
+
+        .icon-btn.syncing .material-symbols-rounded {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ========== Main Content ========== */
+        .main-content {
+            padding: 8px 16px 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== Day Card ========== */
+        .day-card {
+            background: var(--md-surface-container-low);
+            border-radius: var(--md-shape-xl);
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .day-header {
+            background: var(--md-primary-container);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .day-date {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--md-on-primary-container);
+        }
+
+        .day-badge {
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+            padding: 6px 14px;
+            border-radius: var(--md-shape-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .day-items {
+            padding: 8px;
+        }
+
+        /* Schedule Item */
+        .schedule-item {
+            background: var(--md-surface);
+            border-radius: var(--md-shape-lg);
+            padding: 14px 16px;
+            margin-bottom: 8px;
+            transition: all 0.2s;
+            border-left: 4px solid var(--md-secondary);
+        }
+
+        .schedule-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .schedule-item:active {
+            transform: scale(0.98);
+            box-shadow: var(--md-elevation-2);
+        }
+
+        .schedule-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+            padding: 4px 12px;
+            border-radius: var(--md-shape-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .schedule-place {
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--md-on-surface);
+            margin-bottom: 4px;
+        }
+
+        .schedule-place a {
+            color: var(--md-primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .schedule-note {
+            color: var(--md-on-surface-variant);
+            font-size: 0.9rem;
+        }
+
+        /* ========== Chips / Filter Tabs ========== */
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 0 16px;
+            scrollbar-width: none;
+        }
+
+        .filter-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        .chip {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            border-radius: var(--md-shape-full);
+            border: 1px solid var(--md-outline);
+            background: var(--md-surface);
+            color: var(--md-on-surface);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chip:hover {
+            background: var(--md-surface-container-high);
+        }
+
+        .chip.selected {
+            background: var(--md-secondary-container);
+            border-color: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+        }
+
+        .chip .material-symbols-rounded {
+            font-size: 18px;
+        }
+
+        /* ========== Spot Card ========== */
+        .spot-card {
+            background: var(--md-surface);
+            border-radius: var(--md-shape-xl);
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--md-elevation-1);
+            transition: all 0.2s;
+        }
+
+        .spot-card:active {
+            transform: scale(0.98);
+            box-shadow: var(--md-elevation-2);
+        }
+
+        .spot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .spot-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--md-on-surface);
+        }
+
+        .spot-category {
+            background: var(--md-tertiary-container);
+            color: var(--md-on-tertiary-container);
+            padding: 4px 12px;
+            border-radius: var(--md-shape-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .spot-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .spot-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--md-shape-full);
+            background: var(--md-primary-container);
+            color: var(--md-on-primary-container);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .spot-action-btn:hover {
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .spot-action-btn .material-symbols-rounded {
+            font-size: 18px;
+        }
+
+        .spot-note {
+            color: var(--md-on-surface-variant);
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        /* ========== Accounting Summary ========== */
+        .summary-card {
+            background: linear-gradient(135deg, var(--md-primary-container) 0%, var(--md-secondary-container) 100%);
+            border-radius: var(--md-shape-xl);
+            padding: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: var(--md-elevation-2);
+        }
+
+        .summary-label {
+            color: var(--md-on-primary-container);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .summary-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--md-on-primary-container);
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .summary-currency {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .payer-breakdown {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .payer-item {
+            text-align: center;
+        }
+
+        .payer-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--md-shape-full);
+            background: var(--md-surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-weight: 600;
+            color: var(--md-primary);
+            font-size: 1.1rem;
+        }
+
+        .payer-name {
+            font-size: 0.85rem;
+            color: var(--md-on-primary-container);
+            margin-bottom: 4px;
+        }
+
+        .payer-amount {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--md-on-primary-container);
+        }
+
+        /* Expense Item */
+        .expense-item {
+            background: var(--md-surface);
+            border-radius: var(--md-shape-xl);
+            padding: 16px 20px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .expense-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--md-shape-md);
+            background: var(--md-tertiary-container);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 14px;
+        }
+
+        .expense-icon .material-symbols-rounded {
+            color: var(--md-on-tertiary-container);
+        }
+
+        .expense-info {
+            flex: 1;
+        }
+
+        .expense-title {
+            font-weight: 500;
+            color: var(--md-on-surface);
+            margin-bottom: 4px;
+        }
+
+        .expense-meta {
+            display: flex;
+            gap: 12px;
+            color: var(--md-on-surface-variant);
+            font-size: 0.8rem;
+        }
+
+        .expense-amount {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--md-primary);
+        }
+
+        /* ========== Settings ========== */
+        .settings-card {
+            background: var(--md-surface);
+            border-radius: var(--md-shape-xl);
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .settings-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            color: var(--md-on-surface);
+        }
+
+        .settings-title .material-symbols-rounded {
+            color: var(--md-primary);
+        }
+
+        .settings-description {
+            color: var(--md-on-surface-variant);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-top: 12px;
+        }
+
+        .settings-description ol {
+            margin-top: 8px;
+            padding-left: 20px;
+        }
+
+        .settings-description li {
+            margin-bottom: 4px;
+        }
+
+        /* ========== Bottom Navigation ========== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--md-surface-container);
+            padding: 8px 16px;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom));
+            display: flex;
+            justify-content: space-around;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 20px;
+            border-radius: var(--md-shape-lg);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--md-on-surface-variant);
+        }
+
+        .nav-item .icon-container {
+            width: 64px;
+            height: 32px;
+            border-radius: var(--md-shape-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active .icon-container {
+            background: var(--md-secondary-container);
+        }
+
+        .nav-item.active {
+            color: var(--md-on-surface);
+        }
+
+        .nav-item.active .material-symbols-rounded {
+            color: var(--md-on-secondary-container);
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* ========== FAB ========== */
+        .fab {
+            position: fixed;
+            bottom: 96px;
+            right: 16px;
+            width: 56px;
+            height: 56px;
+            border-radius: var(--md-shape-lg);
+            background: var(--md-primary-container);
+            border: none;
+            color: var(--md-on-primary-container);
+            cursor: pointer;
+            box-shadow: var(--md-elevation-3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            z-index: 99;
+        }
+
+        .fab:hover {
+            box-shadow: 0 6px 12px 4px rgba(0,0,0,0.12);
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+        }
+
+        /* ========== Modal / Bottom Sheet ========== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--md-surface-container-low);
+            border-radius: var(--md-shape-xl) var(--md-shape-xl) 0 0;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 24px;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .modal-handle {
+            width: 32px;
+            height: 4px;
+            background: var(--md-outline-variant);
+            border-radius: var(--md-shape-full);
+            margin: 0 auto 20px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--md-on-surface);
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--md-on-surface-variant);
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 16px;
+            background: var(--md-surface);
+            border: 1px solid var(--md-outline-variant);
+            border-radius: var(--md-shape-md);
+            color: var(--md-on-surface);
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--md-primary);
+            box-shadow: 0 0 0 2px rgba(124, 77, 255, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Buttons */
+        .btn {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: var(--md-shape-full);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-filled {
+            background: var(--md-primary);
+            color: var(--md-on-primary);
+        }
+
+        .btn-filled:hover {
+            box-shadow: var(--md-elevation-1);
+        }
+
+        .btn-filled:active {
+            transform: scale(0.98);
+        }
+
+        .btn-outlined {
+            background: transparent;
+            color: var(--md-primary);
+            border: 1px solid var(--md-outline);
+        }
+
+        .btn-outlined:hover {
+            background: var(--md-surface-container-highest);
+        }
+
+        .btn-tonal {
+            background: var(--md-secondary-container);
+            color: var(--md-on-secondary-container);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        /* ========== States ========== */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--md-on-surface-variant);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--md-surface-container-highest);
+            border-top-color: var(--md-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--md-on-surface-variant);
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--md-surface-container-high);
+            border-radius: var(--md-shape-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .empty-icon .material-symbols-rounded {
+            font-size: 36px;
+            color: var(--md-on-surface-variant);
+        }
+
+        .empty-state p {
+            font-size: 0.95rem;
+        }
+
+        /* ========== Snackbar / Toast ========== */
+        .snackbar {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--md-on-surface);
+            color: var(--md-surface);
+            padding: 14px 24px;
+            border-radius: var(--md-shape-xs);
+            box-shadow: var(--md-elevation-3);
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            max-width: calc(100% - 32px);
+        }
+
+        .snackbar.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .snackbar.success {
+            background: var(--md-success);
+        }
+
+        .snackbar.error {
+            background: var(--md-error);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top App Bar -->
+    <header class="top-app-bar">
+        <div class="app-bar-title">
+            <div class="app-icon">🥊</div>
+            <div class="app-title-text">
+                <h1>曼谷打拳之旅</h1>
+                <div class="status">
+                    <span class="status-indicator" id="status-indicator"></span>
+                    <span id="status-text">檢查連線中...</span>
+                </div>
+            </div>
+        </div>
+        <button class="icon-btn" id="sync-btn" onclick="syncData()" aria-label="同步">
+            <span class="material-symbols-rounded">sync</span>
+        </button>
+    </header>
+
+    <!-- Snackbar -->
+    <div id="snackbar" class="snackbar"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Schedule Page -->
+        <div id="page-schedule" class="page active">
+            <div id="schedule-content">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <span>載入行程中...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spots Page -->
+        <div id="page-spots" class="page">
+            <div class="filter-chips">
+                <button class="chip selected" data-category="all">
+                    <span class="material-symbols-rounded">apps</span>
+                    全部
+                </button>
+                <button class="chip" data-category="spots">
+                    <span class="material-symbols-rounded">location_on</span>
+                    景點
+                </button>
+                <button class="chip" data-category="restaurants">
+                    <span class="material-symbols-rounded">restaurant</span>
+                    餐廳
+                </button>
+                <button class="chip" data-category="cafe">
+                    <span class="material-symbols-rounded">local_cafe</span>
+                    咖啡酒吧
+                </button>
+            </div>
+            <div id="spots-content">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <span>載入景點中...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accounting Page -->
+        <div id="page-accounting" class="page">
+            <div class="summary-card">
+                <div class="summary-label">總支出</div>
+                <div class="summary-amount">
+                    <span id="total-amount">0</span>
+                    <span class="summary-currency">NTD</span>
+                </div>
+                <div class="payer-breakdown" id="payer-breakdown"></div>
+            </div>
+            <div id="expense-list">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <span>載入帳目中...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Page -->
+        <div id="page-settings" class="page">
+            <div class="settings-card">
+                <div class="settings-title">
+                    <span class="material-symbols-rounded">link</span>
+                    API 連線設定
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Apps Script 網址</label>
+                    <input type="text" class="form-input" id="api-url-input" placeholder="貼上你的 Apps Script 網址">
+                </div>
+                <button class="btn btn-tonal" onclick="saveApiUrl()">
+                    <span class="material-symbols-rounded">save</span>
+                    儲存設定
+                </button>
+                <div class="settings-description">
+                    <strong>設定步驟：</strong>
+                    <ol>
+                        <li>開啟 Google Sheets → 擴充功能 → Apps Script</li>
+                        <li>貼上提供的程式碼</li>
+                        <li>點擊「部署」→「新增部署作業」</li>
+                        <li>類型選「網頁應用程式」，存取權選「任何人」</li>
+                        <li>複製產生的網址貼到上方</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <div class="settings-title">
+                    <span class="material-symbols-rounded">science</span>
+                    連線測試
+                </div>
+                <button class="btn btn-outlined" onclick="testConnection()">
+                    <span class="material-symbols-rounded">wifi_find</span>
+                    測試連線
+                </button>
+            </div>
+
+            <div class="settings-card">
+                <div class="settings-title">
+                    <span class="material-symbols-rounded">info</span>
+                    關於此應用
+                </div>
+                <p class="settings-description" style="margin-top: 0;">
+                    此應用連接至 Google Sheets 試算表，任何擁有連結的人都可以查看和編輯行程、景點和記帳資料。所有變更會即時同步到試算表中。
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FAB -->
+    <button class="fab" id="fab-btn" onclick="openAddModal()" aria-label="新增">
+        <span class="material-symbols-rounded">add</span>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a class="nav-item active" data-page="schedule">
+            <div class="icon-container">
+                <span class="material-symbols-rounded">calendar_month</span>
+            </div>
+            <span class="nav-label">行程</span>
+        </a>
+        <a class="nav-item" data-page="spots">
+            <div class="icon-container">
+                <span class="material-symbols-rounded">explore</span>
+            </div>
+            <span class="nav-label">景點</span>
+        </a>
+        <a class="nav-item" data-page="accounting">
+            <div class="icon-container">
+                <span class="material-symbols-rounded">payments</span>
+            </div>
+            <span class="nav-label">記帳</span>
+        </a>
+        <a class="nav-item" data-page="settings">
+            <div class="icon-container">
+                <span class="material-symbols-rounded">settings</span>
+            </div>
+            <span class="nav-label">設定</span>
+        </a>
+    </nav>
+
+    <!-- Add Schedule Modal -->
+    <div class="modal-overlay" id="modal-schedule">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <h3 class="modal-title">新增行程</h3>
+                <button class="icon-btn" onclick="closeModal('modal-schedule')">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+            <form id="form-schedule" onsubmit="submitSchedule(event)">
+                <div class="form-group">
+                    <label class="form-label">日期</label>
+                    <select class="form-select" id="schedule-date" required>
+                        <option value="">選擇日期</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">時間（選填）</label>
+                    <input type="text" class="form-input" id="schedule-time" placeholder="例：9:30-11:30 或 晚餐">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">地點名稱</label>
+                    <input type="text" class="form-input" id="schedule-place" placeholder="輸入地點名稱" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Map 連結（選填）</label>
+                    <input type="url" class="form-input" id="schedule-link" placeholder="https://maps.app.goo.gl/...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">備註（選填）</label>
+                    <textarea class="form-textarea" id="schedule-note" placeholder="其他備註..."></textarea>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outlined" onclick="closeModal('modal-schedule')">取消</button>
+                    <button type="submit" class="btn btn-filled">新增</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Spot Modal -->
+    <div class="modal-overlay" id="modal-spot">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <h3 class="modal-title">新增景點</h3>
+                <button class="icon-btn" onclick="closeModal('modal-spot')">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+            <form id="form-spot" onsubmit="submitSpot(event)">
+                <div class="form-group">
+                    <label class="form-label">類別</label>
+                    <select class="form-select" id="spot-category" required>
+                        <option value="spots">景點</option>
+                        <option value="restaurants">餐廳</option>
+                        <option value="cafe">咖啡酒吧</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">名稱</label>
+                    <input type="text" class="form-input" id="spot-name" placeholder="輸入名稱" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Google Map 連結（選填）</label>
+                    <input type="url" class="form-input" id="spot-link" placeholder="https://maps.app.goo.gl/...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">備註（選填）</label>
+                    <textarea class="form-textarea" id="spot-note" placeholder="其他備註..."></textarea>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outlined" onclick="closeModal('modal-spot')">取消</button>
+                    <button type="submit" class="btn btn-filled">新增</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Expense Modal -->
+    <div class="modal-overlay" id="modal-expense">
+        <div class="modal">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <h3 class="modal-title">新增支出</h3>
+                <button class="icon-btn" onclick="closeModal('modal-expense')">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+            <form id="form-expense" onsubmit="submitExpense(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">付款人</label>
+                        <select class="form-select" id="expense-payer" required>
+                            <option value="Chou">Chou</option>
+                            <option value="Kao">Kao</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">日期</label>
+                        <input type="text" class="form-input" id="expense-date" placeholder="例：2/6" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">類別</label>
+                    <select class="form-select" id="expense-type">
+                        <option value="">選擇類別</option>
+                        <option value="機票">機票</option>
+                        <option value="飯店">飯店</option>
+                        <option value="餐飲">餐飲</option>
+                        <option value="交通">交通</option>
+                        <option value="門票">門票</option>
+                        <option value="購物">購物</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">金額 (NTD)</label>
+                    <input type="number" class="form-input" id="expense-amount" placeholder="0" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">備註（選填）</label>
+                    <textarea class="form-textarea" id="expense-notes" placeholder="消費說明..."></textarea>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outlined" onclick="closeModal('modal-expense')">取消</button>
+                    <button type="submit" class="btn btn-filled">新增</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // 設定 - 請在這裡填入你的 Apps Script 網址
+        // ============================================
+        const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbxMRYpcjXs0lsxPAA6YGhQR6LFrcBjvuL8iNbpvmuba24rQ7YHT0x5Te10W-eHVw22mng/exec';
+        
+        let API_URL = localStorage.getItem('apiUrl') || DEFAULT_API_URL;
+        
+        let appData = {
+            schedule: [],
+            spots: [],
+            expenses: []
+        };
+
+        let currentPage = 'schedule';
+
+        // ============================================
+        // 初始化
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            initNavigation();
+            initFilterChips();
+            loadApiUrl();
+            loadData();
+        });
+
+        // ============================================
+        // 導航
+        // ============================================
+        function initNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => switchPage(item.dataset.page));
+            });
+        }
+
+        function switchPage(page) {
+            currentPage = page;
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.page === page);
+            });
+
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.toggle('active', p.id === `page-${page}`);
+            });
+
+            document.getElementById('fab-btn').style.display = page === 'settings' ? 'none' : 'flex';
+        }
+
+        // ============================================
+        // Filter Chips
+        // ============================================
+        function initFilterChips() {
+            document.querySelectorAll('.chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+                    chip.classList.add('selected');
+                    renderSpots(chip.dataset.category);
+                });
+            });
+        }
+
+        // ============================================
+        // API 設定
+        // ============================================
+        function loadApiUrl() {
+            const saved = localStorage.getItem('apiUrl');
+            if (saved) {
+                API_URL = saved;
+            }
+            document.getElementById('api-url-input').value = API_URL;
+        }
+
+        function saveApiUrl() {
+            const url = document.getElementById('api-url-input').value.trim();
+            if (url) {
+                API_URL = url;
+                localStorage.setItem('apiUrl', url);
+                showSnackbar('設定已儲存', 'success');
+                loadData();
+            }
+        }
+
+        function updateStatus(connected, message) {
+            const indicator = document.getElementById('status-indicator');
+            const text = document.getElementById('status-text');
+            
+            indicator.className = 'status-indicator ' + (connected ? 'connected' : 'error');
+            text.textContent = message;
+        }
+
+        // ============================================
+        // 資料載入
+        // ============================================
+        async function loadData() {
+            if (!API_URL) {
+                updateStatus(false, '請先設定 API 網址');
+                renderDemoData();
+                return;
+            }
+
+            try {
+                updateStatus(false, '載入中...');
+                
+                const response = await fetch(`${API_URL}?action=getAll`);
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error);
+                
+                appData.schedule = data.daily || [];
+                appData.spots = data.spots || [];
+                appData.expenses = data.accounting || [];
+                
+                renderSchedule();
+                renderSpots('all');
+                renderExpenses();
+                updateDateOptions();
+                
+                updateStatus(true, '已連線');
+            } catch (error) {
+                console.error('載入失敗:', error);
+                updateStatus(false, '連線失敗');
+                showSnackbar('載入失敗', 'error');
+                renderDemoData();
+            }
+        }
+
+        async function syncData() {
+            const btn = document.getElementById('sync-btn');
+            btn.classList.add('syncing');
+            await loadData();
+            setTimeout(() => btn.classList.remove('syncing'), 1000);
+        }
+
+        async function testConnection() {
+            if (!API_URL) {
+                showSnackbar('請先輸入 API 網址', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}?action=getAll`);
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
+                showSnackbar('連線成功！', 'success');
+                loadData();
+            } catch (error) {
+                showSnackbar('連線失敗: ' + error.message, 'error');
+            }
+        }
+
+        // ============================================
+        // 渲染行程
+        // ============================================
+        function renderSchedule() {
+            const container = document.getElementById('schedule-content');
+            
+            if (appData.schedule.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <span class="material-symbols-rounded">calendar_month</span>
+                        </div>
+                        <p>尚無行程資料</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            appData.schedule.forEach(day => {
+                html += `
+                    <div class="day-card">
+                        <div class="day-header">
+                            <span class="day-date">${day.date}</span>
+                            <span class="day-badge">${day.items.length} 個行程</span>
+                        </div>
+                        <div class="day-items">
+                `;
+                
+                day.items.forEach(item => {
+                    let placeHtml = item.place;
+                    
+                    if (item.link) {
+                        placeHtml = `<a href="${item.link}" target="_blank">${item.place} <span class="material-symbols-rounded" style="font-size:16px">open_in_new</span></a>`;
+                    }
+                    
+                    html += `
+                        <div class="schedule-item">
+                            ${item.time ? `<div class="schedule-time"><span class="material-symbols-rounded" style="font-size:14px">schedule</span>${item.time}</div>` : ''}
+                            <div class="schedule-place">${placeHtml}</div>
+                            ${item.note ? `<div class="schedule-note">${item.note}</div>` : ''}
+                        </div>
+                    `;
+                });
+                
+                html += '</div></div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        function updateDateOptions() {
+            const select = document.getElementById('schedule-date');
+            select.innerHTML = '<option value="">選擇日期</option>';
+            
+            appData.schedule.forEach(day => {
+                const option = document.createElement('option');
+                option.value = day.date;
+                option.textContent = day.date;
+                select.appendChild(option);
+            });
+            
+            const newOption = document.createElement('option');
+            newOption.value = '__new__';
+            newOption.textContent = '+ 新增日期';
+            select.appendChild(newOption);
+        }
+
+        // ============================================
+        // 渲染景點
+        // ============================================
+        function renderSpots(category) {
+            const container = document.getElementById('spots-content');
+            const filtered = category === 'all' 
+                ? appData.spots 
+                : appData.spots.filter(s => s.category === category);
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <span class="material-symbols-rounded">explore</span>
+                        </div>
+                        <p>尚無景點資料</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const labels = {
+                'spots': '景點',
+                'restaurants': '餐廳',
+                'cafe': '咖啡酒吧'
+            };
+
+            const icons = {
+                'spots': 'location_on',
+                'restaurants': 'restaurant',
+                'cafe': 'local_cafe'
+            };
+
+            let html = '';
+            filtered.forEach(spot => {
+                html += `
+                    <div class="spot-card">
+                        <div class="spot-header">
+                            <span class="spot-name">${spot.name}</span>
+                            <span class="spot-category">${labels[spot.category]}</span>
+                        </div>
+                        ${spot.note ? `<div class="spot-note">${spot.note}</div>` : ''}
+                        ${spot.link ? `
+                        <div class="spot-actions">
+                            <a class="spot-action-btn" href="${spot.link}" target="_blank">
+                                <span class="material-symbols-rounded">map</span>
+                                查看地圖
+                            </a>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // 渲染記帳
+        // ============================================
+        function renderExpenses() {
+            const container = document.getElementById('expense-list');
+            const totalEl = document.getElementById('total-amount');
+            const breakdownEl = document.getElementById('payer-breakdown');
+
+            if (appData.expenses.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <span class="material-symbols-rounded">payments</span>
+                        </div>
+                        <p>尚無支出記錄</p>
+                    </div>
+                `;
+                totalEl.textContent = '0';
+                breakdownEl.innerHTML = '';
+                return;
+            }
+
+            const total = appData.expenses.reduce((sum, e) => sum + e.amount, 0);
+            const byPayer = {};
+            appData.expenses.forEach(e => {
+                byPayer[e.payer] = (byPayer[e.payer] || 0) + e.amount;
+            });
+
+            totalEl.textContent = total.toLocaleString();
+
+            let breakdownHtml = '';
+            Object.entries(byPayer).forEach(([payer, amount]) => {
+                const initial = payer.charAt(0).toUpperCase();
+                breakdownHtml += `
+                    <div class="payer-item">
+                        <div class="payer-avatar">${initial}</div>
+                        <div class="payer-name">${payer}</div>
+                        <div class="payer-amount">${amount.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+            breakdownEl.innerHTML = breakdownHtml;
+
+            const typeIcons = {
+                '機票': 'flight',
+                '飯店': 'hotel',
+                '餐飲': 'restaurant',
+                '交通': 'directions_car',
+                '門票': 'confirmation_number',
+                '購物': 'shopping_bag',
+                '其他': 'receipt_long'
+            };
+
+            let html = '';
+            appData.expenses.forEach(expense => {
+                const icon = typeIcons[expense.type] || 'payments';
+                html += `
+                    <div class="expense-item">
+                        <div class="expense-icon">
+                            <span class="material-symbols-rounded">${icon}</span>
+                        </div>
+                        <div class="expense-info">
+                            <div class="expense-title">${expense.notes || expense.type || '支出'}</div>
+                            <div class="expense-meta">
+                                <span>${expense.payer}</span>
+                                <span>${expense.date}</span>
+                                ${expense.type ? `<span>${expense.type}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="expense-amount">${expense.amount.toLocaleString()}</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // 示範資料
+        // ============================================
+        function renderDemoData() {
+            appData.schedule = [
+                {
+                    date: '2/6 (Fri)',
+                    items: [
+                        { time: 'TPE 15:15 - BKK 18:15', place: '飛往曼谷', note: '' },
+                        { time: '晚餐', place: 'Thongsmith Siamese Boat Noodles', note: '船麵' }
+                    ]
+                },
+                {
+                    date: '2/7 (Sat)',
+                    items: [
+                        { time: '9:30-11:30', place: '恰圖恰市集', note: '' },
+                        { time: 'Brunch', place: 'NANA Coffee Roasters Ari', note: '' },
+                        { time: '', place: 'RWS-泰想看拳賽', note: '19:00 開扁' }
+                    ]
+                },
+                {
+                    date: '2/8 (Sun)',
+                    items: [
+                        { time: '9:30-11:30', place: '空叻瑪榮水上市場', note: 'Grab 前往' },
+                        { time: '午餐', place: 'Krua Apsorn @Dinso', note: '' }
+                    ]
+                }
+            ];
+
+            appData.spots = [
+                { category: 'spots', name: '恰圖恰市集', link: '', note: '' },
+                { category: 'spots', name: '臥佛寺', link: '', note: '' },
+                { category: 'restaurants', name: 'Nai Mong Fry Oyster', link: '', note: '米其林' },
+                { category: 'cafe', name: 'NANA Coffee Roasters Ari', link: '', note: '' }
+            ];
+
+            appData.expenses = [
+                { payer: 'Chou', date: '2/6', type: '機票', amount: 25998, notes: '' },
+                { payer: 'Chou', date: '2/6', type: '飯店', amount: 15515, notes: '' },
+                { payer: 'Kao', date: '2/8', type: '門票', amount: 2844, notes: 'Silom Thai Cooking' }
+            ];
+
+            renderSchedule();
+            renderSpots('all');
+            renderExpenses();
+            updateDateOptions();
+        }
+
+        // ============================================
+        // Modal
+        // ============================================
+        function openAddModal() {
+            const modals = {
+                'schedule': 'modal-schedule',
+                'spots': 'modal-spot',
+                'accounting': 'modal-expense'
+            };
+            if (modals[currentPage]) openModal(modals[currentPage]);
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================
+        // 表單提交
+        // ============================================
+        async function submitSchedule(event) {
+            event.preventDefault();
+            
+            let date = document.getElementById('schedule-date').value;
+            const time = document.getElementById('schedule-time').value;
+            const place = document.getElementById('schedule-place').value;
+            const link = document.getElementById('schedule-link').value;
+            const note = document.getElementById('schedule-note').value;
+
+            if (date === '__new__') {
+                date = prompt('請輸入新日期（例：2/9 (Mon)）');
+                if (!date) return;
+            }
+
+            if (!API_URL) {
+                showSnackbar('請先設定 API 網址', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'addSchedule', date, time, place, link, note })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showSnackbar('行程已新增', 'success');
+                    closeModal('modal-schedule');
+                    document.getElementById('form-schedule').reset();
+                    loadData();
+                } else {
+                    throw new Error(result.error || '新增失敗');
+                }
+            } catch (error) {
+                showSnackbar('新增失敗', 'error');
+            }
+        }
+
+        async function submitSpot(event) {
+            event.preventDefault();
+            
+            const category = document.getElementById('spot-category').value;
+            const name = document.getElementById('spot-name').value;
+            const link = document.getElementById('spot-link').value;
+            const note = document.getElementById('spot-note').value;
+
+            if (!API_URL) {
+                showSnackbar('請先設定 API 網址', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'addSpot', category, name, link, note })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showSnackbar('景點已新增', 'success');
+                    closeModal('modal-spot');
+                    document.getElementById('form-spot').reset();
+                    loadData();
+                } else {
+                    throw new Error(result.error || '新增失敗');
+                }
+            } catch (error) {
+                showSnackbar('新增失敗', 'error');
+            }
+        }
+
+        async function submitExpense(event) {
+            event.preventDefault();
+            
+            const payer = document.getElementById('expense-payer').value;
+            const date = document.getElementById('expense-date').value;
+            const type = document.getElementById('expense-type').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            const notes = document.getElementById('expense-notes').value;
+
+            if (!API_URL) {
+                showSnackbar('請先設定 API 網址', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'addExpense', payer, date, type, amount, notes })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    showSnackbar('支出已新增', 'success');
+                    closeModal('modal-expense');
+                    document.getElementById('form-expense').reset();
+                    loadData();
+                } else {
+                    throw new Error(result.error || '新增失敗');
+                }
+            } catch (error) {
+                showSnackbar('新增失敗', 'error');
+            }
+        }
+
+        // ============================================
+        // Snackbar
+        // ============================================
+        function showSnackbar(message, type = 'success') {
+            const snackbar = document.getElementById('snackbar');
+            snackbar.textContent = message;
+            snackbar.className = `snackbar show ${type}`;
+            
+            setTimeout(() => snackbar.classList.remove('show'), 3000);
+        }
+
+        // ============================================
+        // Modal 外部點擊關閉
+        // ============================================
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
