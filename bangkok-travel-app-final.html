@@ -916,6 +916,10 @@
                     <span class="material-symbols-rounded">local_cafe</span>
                     咖啡酒吧
                 </button>
+                <button class="chip" data-category="other">
+                    <span class="material-symbols-rounded">more_horiz</span>
+                    其他
+                </button>
             </div>
             <div id="spots-content">
                 <div class="loading">
@@ -1084,6 +1088,7 @@
                         <option value="spots">景點</option>
                         <option value="restaurants">餐廳</option>
                         <option value="cafe">咖啡酒吧</option>
+                        <option value="other">其他</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1163,7 +1168,7 @@
         // ============================================
         // 設定 - 請在這裡填入你的 Apps Script 網址
         // ============================================
-        const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbx9B_UaD3yG7xguY6_U2BAH2RJ8yXS51lNX4RF2T2Z9v8_oiCRg8bAyH6Er7LNa0P8A/exec';
+        const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbwXJC77Ridqp49UNcRUBR390lgeOdU2N56VOf-evOojQOZVW4mtzL2oXz14U7TfyYKfTQ/exec';
         
         let API_URL = localStorage.getItem('apiUrl') || DEFAULT_API_URL;
         
@@ -1268,7 +1273,7 @@
                 
                 if (data.error) throw new Error(data.error);
                 
-                appData.schedule = data.daily || [];
+                appData.schedule = data.plan || [];
                 appData.spots = data.spots || [];
                 appData.expenses = data.accounting || [];
                 
@@ -1347,7 +1352,7 @@
                     }
                     
                     html += `
-                        <div class="schedule-item">
+                        <div class="schedule-item" data-row="${item.row}" data-date-index="${item.dateIndex}">
                             ${item.time ? `<div class="schedule-time"><span class="material-symbols-rounded" style="font-size:14px">schedule</span>${item.time}</div>` : ''}
                             <div class="schedule-place">${placeHtml}</div>
                             ${item.note ? `<div class="schedule-note">${item.note}</div>` : ''}
@@ -1402,13 +1407,15 @@
             const labels = {
                 'spots': '景點',
                 'restaurants': '餐廳',
-                'cafe': '咖啡酒吧'
+                'cafe': '咖啡酒吧',
+                'other': '其他'
             };
 
             const icons = {
                 'spots': 'location_on',
                 'restaurants': 'restaurant',
-                'cafe': 'local_cafe'
+                'cafe': 'local_cafe',
+                'other': 'more_horiz'
             };
 
             let html = '';
