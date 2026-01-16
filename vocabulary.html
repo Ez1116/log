@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>英文單字學習</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -12,46 +16,84 @@
     }
 
     :root {
-      --primary: #4A90D9;
-      --primary-dark: #357ABD;
-      --success: #5CB85C;
-      --danger: #D9534F;
-      --warning: #F0AD4E;
-      --gray-100: #F8F9FA;
-      --gray-200: #E9ECEF;
-      --gray-300: #DEE2E6;
-      --gray-600: #6C757D;
-      --gray-800: #343A40;
+      /* Primary - 紫色系 */
+      --md-primary: #7C4DFF;
+      --md-primary-hover: #651FFF;
+      --md-primary-container: #E8DEF8;
+      --md-on-primary: #FFFFFF;
+      --md-on-primary-container: #4A148C;
+
+      /* Secondary - 淺紫粉色 */
+      --md-secondary: #9C27B0;
+      --md-secondary-container: #F3E5F5;
+
+      /* Tertiary - 點綴色 */
+      --md-tertiary: #B388FF;
+      --md-tertiary-container: #EDE7F6;
+
+      /* Surface - 背景色 */
+      --md-surface: #FFFBFE;
+      --md-surface-dim: #F5EEFA;
+      --md-surface-variant: #F3EDF7;
+      --md-surface-container: #F7F2FA;
+      --md-surface-container-high: #EDE8F2;
+
+      /* 狀態色 */
+      --md-success: #4CAF50;
+      --md-success-container: #C8E6C9;
+      --md-on-success: #FFFFFF;
+      --md-error: #E53935;
+      --md-error-container: #FFCDD2;
+      --md-on-error: #FFFFFF;
+
+      /* 文字色 */
+      --md-on-surface: #1C1B1F;
+      --md-on-surface-variant: #49454F;
+      --md-outline: #79747E;
+      --md-outline-variant: #CAC4D0;
+
+      /* 陰影 */
+      --md-elevation-1: 0 1px 3px 1px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.3);
+      --md-elevation-2: 0 2px 6px 2px rgba(0,0,0,0.15), 0 1px 2px rgba(0,0,0,0.3);
+      --md-elevation-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.3);
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background-color: var(--gray-100);
-      color: var(--gray-800);
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(180deg, var(--md-surface-dim) 0%, var(--md-surface-variant) 100%);
+      background-attachment: fixed;
+      color: var(--md-on-surface);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    /* Header */
+    .material-symbols-rounded {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* Header - 毛玻璃效果 */
     .header {
-      background: var(--primary);
-      color: white;
-      padding: 16px 20px;
+      background: rgba(255, 251, 254, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      color: var(--md-on-surface);
+      padding: 18px 24px;
       text-align: center;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 20px;
+      font-weight: 500;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       z-index: 100;
+      border-bottom: 1px solid var(--md-outline-variant);
     }
 
     /* Main Content */
     .main-content {
       flex: 1;
-      padding: 70px 16px 80px;
+      padding: 76px 16px 100px;
       max-width: 500px;
       margin: 0 auto;
       width: 100%;
@@ -64,273 +106,354 @@
 
     .page.active {
       display: block;
+      animation: fadeIn 0.3s ease;
     }
 
-    /* Cards */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards - MD3 大圓角 */
     .card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
+      background: var(--md-surface);
+      border-radius: 28px;
+      padding: 24px;
       margin-bottom: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      box-shadow: var(--md-elevation-1);
+      transition: box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--md-elevation-2);
     }
 
     /* Form Elements */
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .form-label {
       display: block;
       font-size: 14px;
       font-weight: 500;
-      color: var(--gray-600);
+      color: var(--md-on-surface-variant);
       margin-bottom: 8px;
+      margin-left: 4px;
     }
 
     .form-input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 16px 20px;
       font-size: 16px;
-      border: 2px solid var(--gray-200);
-      border-radius: 10px;
+      font-family: inherit;
+      border: 2px solid var(--md-outline-variant);
+      border-radius: 16px;
       outline: none;
-      transition: border-color 0.2s;
+      background: var(--md-surface);
+      color: var(--md-on-surface);
+      transition: all 0.2s ease;
     }
 
     .form-input:focus {
-      border-color: var(--primary);
+      border-color: var(--md-primary);
+      box-shadow: 0 0 0 4px rgba(124, 77, 255, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--md-outline);
     }
 
     textarea.form-input {
       resize: vertical;
-      min-height: 80px;
+      min-height: 100px;
     }
 
-    /* Buttons */
+    /* Buttons - 藥丸形狀 */
     .btn {
       width: 100%;
-      padding: 16px;
+      padding: 16px 32px;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 500;
+      font-family: inherit;
       border: none;
-      border-radius: 10px;
+      border-radius: 100px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .btn-primary {
-      background: var(--primary);
-      color: white;
+      background: var(--md-primary);
+      color: var(--md-on-primary);
+      box-shadow: var(--md-elevation-1);
     }
 
     .btn-primary:hover {
-      background: var(--primary-dark);
+      background: var(--md-primary-hover);
+      box-shadow: var(--md-elevation-2);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
     }
 
     .btn-primary:disabled {
-      background: var(--gray-300);
+      background: var(--md-outline-variant);
+      color: var(--md-outline);
       cursor: not-allowed;
+      box-shadow: none;
     }
 
     .btn-success {
-      background: var(--success);
-      color: white;
+      background: var(--md-success);
+      color: var(--md-on-success);
+      box-shadow: var(--md-elevation-1);
     }
 
     .btn-outline {
-      background: white;
-      color: var(--gray-800);
-      border: 2px solid var(--gray-200);
+      background: var(--md-surface);
+      color: var(--md-primary);
+      border: 2px solid var(--md-outline-variant);
     }
 
     .btn-outline:hover {
-      border-color: var(--primary);
-      color: var(--primary);
+      background: var(--md-primary-container);
+      border-color: var(--md-primary);
     }
 
-    /* Bottom Navigation */
+    /* Bottom Navigation - MD3 風格 */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: white;
+      background: var(--md-surface-container);
       display: flex;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      padding: 8px 8px 12px;
       z-index: 100;
+      border-top: 1px solid var(--md-outline-variant);
     }
 
     .nav-item {
       flex: 1;
-      padding: 12px 8px;
+      padding: 4px 0;
       text-align: center;
-      color: var(--gray-600);
+      color: var(--md-on-surface-variant);
       cursor: pointer;
-      transition: color 0.2s;
+      transition: all 0.2s ease;
       border: none;
       background: none;
       font-size: 12px;
+      font-family: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-item .nav-icon {
+      width: 64px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      font-size: 24px;
+      transition: all 0.2s ease;
     }
 
     .nav-item.active {
-      color: var(--primary);
+      color: var(--md-on-surface);
     }
 
-    .nav-icon {
-      font-size: 24px;
-      margin-bottom: 4px;
+    .nav-item.active .nav-icon {
+      background: var(--md-primary-container);
+      color: var(--md-on-primary-container);
+    }
+
+    .nav-item:hover:not(.active) .nav-icon {
+      background: var(--md-surface-container-high);
     }
 
     /* Record List */
     .record-item {
-      padding: 16px;
-      border-bottom: 1px solid var(--gray-200);
+      padding: 16px 4px;
+      border-bottom: 1px solid var(--md-outline-variant);
+      transition: background 0.2s ease;
     }
 
     .record-item:last-child {
       border-bottom: none;
     }
 
+    .record-item:hover {
+      background: var(--md-surface-variant);
+      margin: 0 -4px;
+      padding: 16px 8px;
+      border-radius: 16px;
+    }
+
     .record-english {
       font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 4px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--md-on-surface);
     }
 
     .record-chinese {
       font-size: 16px;
-      color: var(--gray-600);
-      margin-bottom: 4px;
+      color: var(--md-primary);
+      margin-bottom: 6px;
+      font-weight: 500;
     }
 
     .record-context {
       font-size: 14px;
-      color: var(--gray-600);
+      color: var(--md-on-surface-variant);
       font-style: italic;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      line-height: 1.5;
     }
 
     .record-date {
       font-size: 12px;
-      color: var(--gray-600);
+      color: var(--md-outline);
     }
 
     /* Quiz Card */
     .quiz-card {
       text-align: center;
+      padding: 32px 24px;
     }
 
     .quiz-english {
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--gray-800);
+      margin-bottom: 12px;
+      color: var(--md-on-surface);
+      letter-spacing: -0.5px;
     }
 
     .quiz-context {
-      font-size: 14px;
-      color: var(--gray-600);
+      font-size: 15px;
+      color: var(--md-on-surface-variant);
       font-style: italic;
-      margin-bottom: 24px;
-      min-height: 20px;
+      margin-bottom: 32px;
+      min-height: 24px;
+      line-height: 1.5;
     }
 
     .quiz-options {
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .quiz-option {
-      padding: 18px 20px;
+      padding: 20px 24px;
       font-size: 18px;
-      border: 2px solid var(--gray-200);
-      border-radius: 12px;
-      background: white;
+      font-family: inherit;
+      border: 2px solid var(--md-outline-variant);
+      border-radius: 100px;
+      background: var(--md-surface);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       text-align: center;
+      font-weight: 500;
     }
 
     .quiz-option:hover:not(:disabled) {
-      border-color: var(--primary);
-      background: var(--gray-100);
+      border-color: var(--md-primary);
+      background: var(--md-primary-container);
+      transform: scale(1.02);
     }
 
     .quiz-option.correct {
-      border-color: var(--success);
-      background: rgba(92, 184, 92, 0.1);
-      color: var(--success);
+      border-color: var(--md-success);
+      background: var(--md-success-container);
+      color: #1B5E20;
     }
 
     .quiz-option.wrong {
-      border-color: var(--danger);
-      background: rgba(217, 83, 79, 0.1);
-      color: var(--danger);
+      border-color: var(--md-error);
+      background: var(--md-error-container);
+      color: #B71C1C;
     }
 
     .quiz-option:disabled {
       cursor: default;
+      transform: none;
     }
 
     .quiz-result {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      min-height: 36px;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      min-height: 40px;
     }
 
     .quiz-result.correct {
-      color: var(--success);
+      color: var(--md-success);
     }
 
     .quiz-result.wrong {
-      color: var(--danger);
+      color: var(--md-error);
     }
 
     /* Search */
     .search-box {
       display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
     .search-box .form-input {
       flex: 1;
+      border-radius: 100px;
+      padding: 14px 24px;
     }
 
     .search-box .btn {
       width: auto;
-      padding: 14px 20px;
+      padding: 14px 28px;
     }
 
     /* Empty State */
     .empty-state {
       text-align: center;
-      padding: 40px 20px;
-      color: var(--gray-600);
+      padding: 48px 24px;
+      color: var(--md-on-surface-variant);
     }
 
     .empty-icon {
-      font-size: 48px;
+      font-size: 56px;
       margin-bottom: 16px;
+      opacity: 0.8;
+    }
+
+    .empty-state p {
+      font-size: 15px;
+      line-height: 1.5;
     }
 
     /* Loading */
     .loading {
       text-align: center;
-      padding: 40px;
-      color: var(--gray-600);
+      padding: 48px;
+      color: var(--md-on-surface-variant);
     }
 
     .spinner {
       display: inline-block;
-      width: 40px;
-      height: 40px;
-      border: 4px solid var(--gray-200);
-      border-top-color: var(--primary);
+      width: 48px;
+      height: 48px;
+      border: 4px solid var(--md-primary-container);
+      border-top-color: var(--md-primary);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -339,41 +462,46 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Toast */
+    /* Toast - MD3 Snackbar 風格 */
     .toast {
       position: fixed;
       top: 80px;
       left: 50%;
-      transform: translateX(-50%);
-      background: var(--gray-800);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
+      transform: translateX(-50%) translateY(-20px);
+      background: var(--md-on-surface);
+      color: var(--md-surface);
+      padding: 14px 24px;
+      border-radius: 100px;
       font-size: 14px;
+      font-weight: 500;
       z-index: 200;
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: all 0.3s ease;
+      box-shadow: var(--md-elevation-3);
     }
 
     .toast.show {
       opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .toast.success {
-      background: var(--success);
+      background: var(--md-success);
+      color: var(--md-on-success);
     }
 
     .toast.error {
-      background: var(--danger);
+      background: var(--md-error);
+      color: var(--md-on-error);
     }
 
     /* Section Title */
     .section-title {
       font-size: 14px;
-      font-weight: 600;
-      color: var(--gray-600);
-      margin-bottom: 12px;
-      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--md-primary);
+      margin-bottom: 16px;
+      margin-left: 4px;
       letter-spacing: 0.5px;
     }
 
@@ -381,16 +509,28 @@
     .stats {
       display: flex;
       justify-content: center;
-      gap: 24px;
-      margin-bottom: 20px;
-      font-size: 14px;
-      color: var(--gray-600);
+      gap: 32px;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--md-primary-container);
+      border-radius: 20px;
+    }
+
+    .stats > div {
+      text-align: center;
     }
 
     .stat-value {
-      font-size: 24px;
+      font-size: 32px;
       font-weight: 700;
-      color: var(--primary);
+      color: var(--md-on-primary-container);
+    }
+
+    .stats > div > div:last-child {
+      font-size: 13px;
+      color: var(--md-on-primary-container);
+      opacity: 0.8;
+      margin-top: 4px;
     }
   </style>
 </head>
@@ -468,15 +608,15 @@
   <!-- 底部導航 -->
   <nav class="bottom-nav">
     <button class="nav-item active" onclick="switchPage('record')">
-      <div class="nav-icon">+</div>
+      <div class="nav-icon"><span class="material-symbols-rounded">add_circle</span></div>
       <div>記錄</div>
     </button>
     <button class="nav-item" onclick="switchPage('history')">
-      <div class="nav-icon">&#128196;</div>
+      <div class="nav-icon"><span class="material-symbols-rounded">history</span></div>
       <div>歷史</div>
     </button>
     <button class="nav-item" onclick="switchPage('review')">
-      <div class="nav-icon">&#9997;</div>
+      <div class="nav-icon"><span class="material-symbols-rounded">school</span></div>
       <div>複習</div>
     </button>
   </nav>
@@ -535,8 +675,7 @@
       btn.textContent = '儲存中...';
 
       try {
-        const response = await callApi('POST', {
-          action: 'add',
+        const response = await callApi('add', {
           english: english,
           chinese: chinese,
           context: context
@@ -567,7 +706,7 @@
       listEl.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
 
       try {
-        const response = await callApi('GET', { action: 'recent' });
+        const response = await callApi('recent');
 
         if (response.success) {
           renderRecordList(listEl, response.data);
@@ -593,7 +732,7 @@
       listEl.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
 
       try {
-        const response = await callApi('GET', { action: 'search', keyword: keyword });
+        const response = await callApi('search', { keyword: keyword });
 
         if (response.success) {
           renderRecordList(listEl, response.data);
@@ -644,13 +783,13 @@
 
       try {
         // 先取得總數
-        const countResponse = await callApi('GET', { action: 'count' });
+        const countResponse = await callApi('count');
         if (countResponse.success) {
           document.getElementById('stat-total').textContent = countResponse.data.count;
         }
 
         // 取得題目
-        const response = await callApi('GET', { action: 'quiz' });
+        const response = await callApi('quiz');
 
         if (response.success) {
           containerEl.style.display = 'block';
@@ -709,23 +848,12 @@
     }
 
     // ========== API 呼叫 ==========
-    async function callApi(method, params) {
-      const baseUrl = 'https://script.google.com/macros/s/AKfycbwC_iRyQ_L5IRxcOB6P33nrq5lKGt3ldIfXIs5wfIu9JAvlBmUu4WaItM1iDLbHQi8h/exec';
-
-      if (method === 'GET') {
-        const queryString = new URLSearchParams(params).toString();
-        const response = await fetch(baseUrl + '?' + queryString);
-        return await response.json();
-      } else {
-        const response = await fetch(baseUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(params)
-        });
-        return await response.json();
-      }
+    async function callApi(action, params = {}) {
+      const baseUrl = 'https://script.google.com/macros/s/AKfycbwINrf0Bq8kYBtziN3LGzZrnyRj1bMKp0qbyGr_xj0qP49N6KoBSxdsTOcdSZRpwh3_/exec';
+      const allParams = { action, ...params };
+      const queryString = new URLSearchParams(allParams).toString();
+      const response = await fetch(baseUrl + '?' + queryString);
+      return await response.json();
     }
 
     // ========== 工具函數 ==========
