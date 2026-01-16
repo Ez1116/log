@@ -796,6 +796,50 @@
             opacity: 1;
         }
 
+        /* ========== Loading Overlay ========== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .loading-modal {
+            background: var(--ios-bg-secondary);
+            border-radius: 14px;
+            padding: 24px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .loading-modal .loading-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--ios-gray-5);
+            border-top-color: var(--ios-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-modal span {
+            font-size: 15px;
+            color: var(--ios-text-secondary);
+            font-weight: 500;
+        }
+
         /* ========== Responsive ========== */
         @media (min-width: 500px) {
             .main-content {
@@ -823,6 +867,14 @@
 
     <!-- Toast -->
     <div id="toast" class="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-modal">
+            <div class="loading-spinner"></div>
+            <span>資訊上傳中...</span>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -1479,7 +1531,7 @@
         // ============================================
         async function submitSchedule(event) {
             event.preventDefault();
-            
+
             let date = document.getElementById('schedule-date').value;
             const time = document.getElementById('schedule-time').value;
             const place = document.getElementById('schedule-place').value;
@@ -1491,6 +1543,8 @@
                 if (!date) return;
             }
 
+            showLoading('正在新增行程...');
+
             try {
                 await fetch(API_URL, {
                     method: 'POST',
@@ -1499,22 +1553,26 @@
                     body: JSON.stringify({ action: 'addSchedule', date, time, place, link, note })
                 });
 
+                hideLoading();
                 showToast('已新增行程');
                 closeModal('modal-schedule');
                 document.getElementById('form-schedule').reset();
                 setTimeout(() => loadData(), 500);
             } catch (error) {
+                hideLoading();
                 showToast('新增失敗');
             }
         }
 
         async function submitSpot(event) {
             event.preventDefault();
-            
+
             const category = document.getElementById('spot-category').value;
             const name = document.getElementById('spot-name').value;
             const link = document.getElementById('spot-link').value;
             const note = document.getElementById('spot-note').value;
+
+            showLoading('正在新增景點...');
 
             try {
                 await fetch(API_URL, {
@@ -1524,23 +1582,27 @@
                     body: JSON.stringify({ action: 'addSpot', category, name, link, note })
                 });
 
+                hideLoading();
                 showToast('已新增景點');
                 closeModal('modal-spot');
                 document.getElementById('form-spot').reset();
                 setTimeout(() => loadData(), 500);
             } catch (error) {
+                hideLoading();
                 showToast('新增失敗');
             }
         }
 
         async function submitExpense(event) {
             event.preventDefault();
-            
+
             const payer = document.getElementById('expense-payer').value;
             const date = document.getElementById('expense-date').value;
             const type = document.getElementById('expense-type').value;
             const amount = parseFloat(document.getElementById('expense-amount').value);
             const currency = document.getElementById('expense-currency').value;
+
+            showLoading('正在新增支出...');
 
             try {
                 await fetch(API_URL, {
@@ -1550,11 +1612,13 @@
                     body: JSON.stringify({ action: 'addExpense', payer, date, type, amount, notes: currency })
                 });
 
+                hideLoading();
                 showToast('已新增支出');
                 closeModal('modal-expense');
                 document.getElementById('form-expense').reset();
                 setTimeout(() => loadData(), 500);
             } catch (error) {
+                hideLoading();
                 showToast('新增失敗');
             }
         }
@@ -1567,6 +1631,20 @@
             toast.textContent = message;
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // ============================================
+        // Loading Overlay
+        // ============================================
+        function showLoading(message = '資訊上傳中...') {
+            const overlay = document.getElementById('loading-overlay');
+            const textEl = overlay.querySelector('span');
+            textEl.textContent = message;
+            overlay.classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.remove('active');
         }
 
         // ============================================
