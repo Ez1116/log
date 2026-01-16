@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>英文單字學習</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4A90D9;
+      --primary-dark: #357ABD;
+      --success: #5CB85C;
+      --danger: #D9534F;
+      --warning: #F0AD4E;
+      --gray-100: #F8F9FA;
+      --gray-200: #E9ECEF;
+      --gray-300: #DEE2E6;
+      --gray-600: #6C757D;
+      --gray-800: #343A40;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background-color: var(--gray-100);
+      color: var(--gray-800);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      background: var(--primary);
+      color: white;
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 70px 16px 80px;
+      max-width: 500px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Page */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-600);
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 2px solid var(--gray-200);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-primary:disabled {
+      background: var(--gray-300);
+      cursor: not-allowed;
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--gray-800);
+      border: 2px solid var(--gray-200);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: white;
+      display: flex;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      z-index: 100;
+    }
+
+    .nav-item {
+      flex: 1;
+      padding: 12px 8px;
+      text-align: center;
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: color 0.2s;
+      border: none;
+      background: none;
+      font-size: 12px;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-icon {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    /* Record List */
+    .record-item {
+      padding: 16px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .record-item:last-child {
+      border-bottom: none;
+    }
+
+    .record-english {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .record-chinese {
+      font-size: 16px;
+      color: var(--gray-600);
+      margin-bottom: 4px;
+    }
+
+    .record-context {
+      font-size: 14px;
+      color: var(--gray-600);
+      font-style: italic;
+      margin-bottom: 4px;
+    }
+
+    .record-date {
+      font-size: 12px;
+      color: var(--gray-600);
+    }
+
+    /* Quiz Card */
+    .quiz-card {
+      text-align: center;
+    }
+
+    .quiz-english {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--gray-800);
+    }
+
+    .quiz-context {
+      font-size: 14px;
+      color: var(--gray-600);
+      font-style: italic;
+      margin-bottom: 24px;
+      min-height: 20px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .quiz-option {
+      padding: 18px 20px;
+      font-size: 18px;
+      border: 2px solid var(--gray-200);
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .quiz-option:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--gray-100);
+    }
+
+    .quiz-option.correct {
+      border-color: var(--success);
+      background: rgba(92, 184, 92, 0.1);
+      color: var(--success);
+    }
+
+    .quiz-option.wrong {
+      border-color: var(--danger);
+      background: rgba(217, 83, 79, 0.1);
+      color: var(--danger);
+    }
+
+    .quiz-option:disabled {
+      cursor: default;
+    }
+
+    .quiz-result {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      min-height: 36px;
+    }
+
+    .quiz-result.correct {
+      color: var(--success);
+    }
+
+    .quiz-result.wrong {
+      color: var(--danger);
+    }
+
+    /* Search */
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .search-box .form-input {
+      flex: 1;
+    }
+
+    .search-box .btn {
+      width: auto;
+      padding: 14px 20px;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--gray-600);
+    }
+
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--gray-600);
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--gray-200);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gray-800);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      z-index: 200;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: var(--success);
+    }
+
+    .toast.error {
+      background: var(--danger);
+    }
+
+    /* Section Title */
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-600);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: var(--gray-600);
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="header-title">英文單字學習</header>
+
+  <main class="main-content">
+    <!-- 記錄頁面 -->
+    <div id="page-record" class="page active">
+      <div class="card">
+        <div class="form-group">
+          <label class="form-label">英文單字 / 句子 *</label>
+          <input type="text" id="input-english" class="form-input" placeholder="輸入英文..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label">中文翻譯 *</label>
+          <input type="text" id="input-chinese" class="form-input" placeholder="輸入中文翻譯..." autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label">情境補充（選填）</label>
+          <textarea id="input-context" class="form-input" placeholder="輸入例句或情境..."></textarea>
+        </div>
+        <button id="btn-save" class="btn btn-primary" onclick="saveRecord()">儲存</button>
+      </div>
+    </div>
+
+    <!-- 歷史與搜尋頁面 -->
+    <div id="page-history" class="page">
+      <div class="search-box">
+        <input type="text" id="input-search" class="form-input" placeholder="搜尋單字..." autocomplete="off">
+        <button class="btn btn-primary" onclick="searchRecords()">搜尋</button>
+      </div>
+
+      <div id="search-results" style="display: none;">
+        <p class="section-title">搜尋結果</p>
+        <div class="card" id="search-list"></div>
+      </div>
+
+      <div id="recent-section">
+        <p class="section-title">最近三天的紀錄</p>
+        <div class="card" id="recent-list">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 複習頁面 -->
+    <div id="page-review" class="page">
+      <div class="card quiz-card">
+        <div class="stats">
+          <div>
+            <div class="stat-value" id="stat-total">-</div>
+            <div>單字總數</div>
+          </div>
+        </div>
+
+        <div id="quiz-container">
+          <div class="quiz-english" id="quiz-english">載入中...</div>
+          <div class="quiz-context" id="quiz-context"></div>
+          <div class="quiz-options" id="quiz-options"></div>
+          <div class="quiz-result" id="quiz-result"></div>
+          <button id="btn-next" class="btn btn-primary" onclick="loadQuiz()" style="display: none;">下一題</button>
+        </div>
+
+        <div id="quiz-empty" style="display: none;">
+          <div class="empty-state">
+            <div class="empty-icon">📚</div>
+            <p>至少需要 3 個單字才能開始複習</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 底部導航 -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="switchPage('record')">
+      <div class="nav-icon">+</div>
+      <div>記錄</div>
+    </button>
+    <button class="nav-item" onclick="switchPage('history')">
+      <div class="nav-icon">&#128196;</div>
+      <div>歷史</div>
+    </button>
+    <button class="nav-item" onclick="switchPage('review')">
+      <div class="nav-icon">&#9997;</div>
+      <div>複習</div>
+    </button>
+  </nav>
+
+  <!-- Toast 通知 -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ========== 全域變數 ==========
+    let currentQuiz = null;
+    let answered = false;
+
+    // ========== 頁面切換 ==========
+    function switchPage(pageName) {
+      // 更新頁面顯示
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById('page-' + pageName).classList.add('active');
+
+      // 更新導航按鈕
+      document.querySelectorAll('.nav-item').forEach((item, index) => {
+        item.classList.remove('active');
+      });
+      event.currentTarget.classList.add('active');
+
+      // 更新標題
+      const titles = {
+        'record': '記錄單字',
+        'history': '歷史紀錄',
+        'review': '複習測驗'
+      };
+      document.getElementById('header-title').textContent = titles[pageName];
+
+      // 載入頁面資料
+      if (pageName === 'history') {
+        loadRecentRecords();
+      } else if (pageName === 'review') {
+        loadQuiz();
+      }
+    }
+
+    // ========== 記錄功能 ==========
+    async function saveRecord() {
+      const english = document.getElementById('input-english').value.trim();
+      const chinese = document.getElementById('input-chinese').value.trim();
+      const context = document.getElementById('input-context').value.trim();
+
+      if (!english || !chinese) {
+        showToast('請填寫英文和中文翻譯', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('btn-save');
+      btn.disabled = true;
+      btn.textContent = '儲存中...';
+
+      try {
+        const response = await callApi('POST', {
+          action: 'add',
+          english: english,
+          chinese: chinese,
+          context: context
+        });
+
+        if (response.success) {
+          showToast('儲存成功！', 'success');
+          // 清空輸入框
+          document.getElementById('input-english').value = '';
+          document.getElementById('input-chinese').value = '';
+          document.getElementById('input-context').value = '';
+          // 聚焦到英文輸入框
+          document.getElementById('input-english').focus();
+        } else {
+          showToast(response.error || '儲存失敗', 'error');
+        }
+      } catch (error) {
+        showToast('網路錯誤，請稍後再試', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '儲存';
+      }
+    }
+
+    // ========== 歷史紀錄功能 ==========
+    async function loadRecentRecords() {
+      const listEl = document.getElementById('recent-list');
+      listEl.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+      try {
+        const response = await callApi('GET', { action: 'recent' });
+
+        if (response.success) {
+          renderRecordList(listEl, response.data);
+        } else {
+          listEl.innerHTML = '<div class="empty-state"><p>' + (response.error || '載入失敗') + '</p></div>';
+        }
+      } catch (error) {
+        listEl.innerHTML = '<div class="empty-state"><p>網路錯誤</p></div>';
+      }
+    }
+
+    async function searchRecords() {
+      const keyword = document.getElementById('input-search').value.trim();
+
+      if (!keyword) {
+        document.getElementById('search-results').style.display = 'none';
+        return;
+      }
+
+      const listEl = document.getElementById('search-list');
+      const resultsSection = document.getElementById('search-results');
+      resultsSection.style.display = 'block';
+      listEl.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+      try {
+        const response = await callApi('GET', { action: 'search', keyword: keyword });
+
+        if (response.success) {
+          renderRecordList(listEl, response.data);
+        } else {
+          listEl.innerHTML = '<div class="empty-state"><p>' + (response.error || '搜尋失敗') + '</p></div>';
+        }
+      } catch (error) {
+        listEl.innerHTML = '<div class="empty-state"><p>網路錯誤</p></div>';
+      }
+    }
+
+    function renderRecordList(container, records) {
+      if (!records || records.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><p>沒有紀錄</p></div>';
+        return;
+      }
+
+      let html = '';
+      records.forEach(record => {
+        html += '<div class="record-item">';
+        html += '<div class="record-english">' + escapeHtml(record.english) + '</div>';
+        html += '<div class="record-chinese">' + escapeHtml(record.chinese) + '</div>';
+        if (record.context) {
+          html += '<div class="record-context">' + escapeHtml(record.context) + '</div>';
+        }
+        html += '<div class="record-date">' + escapeHtml(record.createdAt) + '</div>';
+        html += '</div>';
+      });
+      container.innerHTML = html;
+    }
+
+    // ========== 複習功能 ==========
+    async function loadQuiz() {
+      answered = false;
+      document.getElementById('quiz-result').textContent = '';
+      document.getElementById('quiz-result').className = 'quiz-result';
+      document.getElementById('btn-next').style.display = 'none';
+
+      const englishEl = document.getElementById('quiz-english');
+      const contextEl = document.getElementById('quiz-context');
+      const optionsEl = document.getElementById('quiz-options');
+      const containerEl = document.getElementById('quiz-container');
+      const emptyEl = document.getElementById('quiz-empty');
+
+      englishEl.textContent = '載入中...';
+      contextEl.textContent = '';
+      optionsEl.innerHTML = '';
+
+      try {
+        // 先取得總數
+        const countResponse = await callApi('GET', { action: 'count' });
+        if (countResponse.success) {
+          document.getElementById('stat-total').textContent = countResponse.data.count;
+        }
+
+        // 取得題目
+        const response = await callApi('GET', { action: 'quiz' });
+
+        if (response.success) {
+          containerEl.style.display = 'block';
+          emptyEl.style.display = 'none';
+
+          currentQuiz = response.data;
+          englishEl.textContent = currentQuiz.english;
+          contextEl.textContent = currentQuiz.context || '';
+
+          let optionsHtml = '';
+          currentQuiz.options.forEach((option, index) => {
+            optionsHtml += '<button class="quiz-option" onclick="selectAnswer(' + index + ')" data-correct="' + option.isCorrect + '">';
+            optionsHtml += escapeHtml(option.text);
+            optionsHtml += '</button>';
+          });
+          optionsEl.innerHTML = optionsHtml;
+        } else {
+          containerEl.style.display = 'none';
+          emptyEl.style.display = 'block';
+        }
+      } catch (error) {
+        englishEl.textContent = '載入失敗';
+      }
+    }
+
+    function selectAnswer(index) {
+      if (answered) return;
+      answered = true;
+
+      const options = document.querySelectorAll('.quiz-option');
+      const selectedOption = options[index];
+      const isCorrect = selectedOption.dataset.correct === 'true';
+
+      // 標記所有選項
+      options.forEach(option => {
+        option.disabled = true;
+        if (option.dataset.correct === 'true') {
+          option.classList.add('correct');
+        } else if (option === selectedOption) {
+          option.classList.add('wrong');
+        }
+      });
+
+      // 顯示結果
+      const resultEl = document.getElementById('quiz-result');
+      if (isCorrect) {
+        resultEl.textContent = '正確！';
+        resultEl.className = 'quiz-result correct';
+      } else {
+        resultEl.textContent = '答錯了～';
+        resultEl.className = 'quiz-result wrong';
+      }
+
+      // 顯示下一題按鈕
+      document.getElementById('btn-next').style.display = 'block';
+    }
+
+    // ========== API 呼叫 ==========
+    async function callApi(method, params) {
+      const baseUrl = 'https://script.google.com/macros/s/AKfycbwC_iRyQ_L5IRxcOB6P33nrq5lKGt3ldIfXIs5wfIu9JAvlBmUu4WaItM1iDLbHQi8h/exec';
+
+      if (method === 'GET') {
+        const queryString = new URLSearchParams(params).toString();
+        const response = await fetch(baseUrl + '?' + queryString);
+        return await response.json();
+      } else {
+        const response = await fetch(baseUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(params)
+        });
+        return await response.json();
+      }
+    }
+
+    // ========== 工具函數 ==========
+    function showToast(message, type = '') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast show ' + type;
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2000);
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ========== 鍵盤事件 ==========
+    document.addEventListener('keydown', function(e) {
+      // Enter 鍵儲存（在記錄頁面）
+      if (e.key === 'Enter' && !e.shiftKey) {
+        const activeEl = document.activeElement;
+        if (activeEl.id === 'input-english' || activeEl.id === 'input-chinese') {
+          e.preventDefault();
+          saveRecord();
+        } else if (activeEl.id === 'input-search') {
+          e.preventDefault();
+          searchRecords();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
