@@ -849,7 +849,7 @@
 
     // ========== API 呼叫 ==========
     async function callApi(action, params = {}) {
-      const baseUrl = 'https://script.google.com/macros/s/AKfycbxzd_KMilzNyROLlIXpV-7d2Qe9CVboeDjmu2Gn5N3yULjHi8r90p2m1ew3SnqFHJcV/exec';
+      const baseUrl = 'https://script.google.com/macros/s/AKfycbxrg1Dx50FGZU7Av9pDBrT9TTPyftYG0gDnED75AL5tvhAKXMA3Rewph1xNlJWSdB7h/exec';
       const allParams = { action, ...params };
       const queryString = new URLSearchParams(allParams).toString();
       const response = await fetch(baseUrl + '?' + queryString);
