@@ -796,6 +796,83 @@
             opacity: 1;
         }
 
+        /* ========== 左滑刪除 ========== */
+        .swipe-container {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        .swipe-content {
+            position: relative;
+            background: var(--ios-bg-secondary);
+            transition: transform 0.3s ease;
+            z-index: 1;
+        }
+
+        .swipe-content.swiping {
+            transition: none;
+        }
+
+        .swipe-actions {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: stretch;
+        }
+
+        .swipe-delete-btn {
+            width: 80px;
+            background: var(--ios-red);
+            color: white;
+            border: none;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .swipe-delete-btn:active {
+            background: #d63029;
+        }
+
+        /* 確認刪除 Action Sheet */
+        .action-sheet {
+            background: var(--ios-bg-tertiary);
+            border-radius: 14px 14px 0 0;
+            padding: 8px;
+            padding-bottom: calc(8px + env(safe-area-inset-bottom));
+            animation: sheetSlideUp 0.3s ease;
+        }
+
+        .action-sheet-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            background: var(--ios-bg-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 14px;
+            margin-bottom: 8px;
+        }
+
+        .action-sheet-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        .action-sheet-btn.destructive {
+            color: var(--ios-red);
+        }
+
+        .action-sheet-btn.cancel {
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
         /* ========== Loading Overlay ========== */
         .loading-overlay {
             position: fixed;
@@ -1092,6 +1169,14 @@
         </div>
     </div>
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="modal-delete">
+        <div class="action-sheet">
+            <button class="action-sheet-btn destructive" onclick="executeDelete()">刪除</button>
+            <button class="action-sheet-btn cancel" onclick="closeModal('modal-delete')">取消</button>
+        </div>
+    </div>
+
     <script>
         // ============================================
         // 設定
@@ -1255,26 +1340,32 @@
                     if (item.link) {
                         placeHtml = `<a href="${item.link}" target="_blank">${item.place}</a>`;
                     }
-                    
+
                     html += `
-                        <div class="schedule-item">
-                            ${item.time ? `<div class="schedule-time">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"/>
-                                    <path d="M12 6v6l4 2"/>
-                                </svg>
-                                ${item.time}
-                            </div>` : ''}
-                            <div class="schedule-place">${placeHtml}</div>
-                            ${item.note ? `<div class="schedule-note">${item.note}</div>` : ''}
+                        <div class="swipe-container">
+                            <div class="swipe-content schedule-item">
+                                ${item.time ? `<div class="schedule-time">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                    </svg>
+                                    ${item.time}
+                                </div>` : ''}
+                                <div class="schedule-place">${placeHtml}</div>
+                                ${item.note ? `<div class="schedule-note">${item.note}</div>` : ''}
+                            </div>
+                            <div class="swipe-actions">
+                                <button class="swipe-delete-btn" onclick="confirmDelete('schedule', {row: ${item.row}, dateIndex: ${item.dateIndex}})">刪除</button>
+                            </div>
                         </div>
                     `;
                 });
-                
+
                 html += '</div>';
             });
 
             container.innerHTML = html;
+            initAllSwipes();
         }
 
         function updateDateOptions() {
@@ -1338,28 +1429,34 @@
             filtered.forEach(spot => {
                 const displayName = searchQuery ? highlightText(spot.name, searchQuery) : spot.name;
                 const displayNote = searchQuery && spot.note ? highlightText(spot.note, searchQuery) : spot.note;
-                
+
                 html += `
-                    <div class="spot-card">
-                        <div class="spot-header">
-                            <span class="spot-name">${displayName}</span>
-                            <span class="spot-category">${labels[spot.category]}</span>
+                    <div class="swipe-container" style="margin-bottom: 12px; border-radius: var(--ios-card-radius);">
+                        <div class="swipe-content spot-card" style="margin-bottom: 0;">
+                            <div class="spot-header">
+                                <span class="spot-name">${displayName}</span>
+                                <span class="spot-category">${labels[spot.category]}</span>
+                            </div>
+                            ${spot.note ? `<div class="spot-note">${displayNote}</div>` : ''}
+                            ${spot.link ? `
+                            <a class="spot-link" href="${spot.link}" target="_blank">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                                查看地圖
+                            </a>
+                            ` : ''}
                         </div>
-                        ${spot.note ? `<div class="spot-note">${displayNote}</div>` : ''}
-                        ${spot.link ? `
-                        <a class="spot-link" href="${spot.link}" target="_blank">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-                                <circle cx="12" cy="10" r="3"/>
-                            </svg>
-                            查看地圖
-                        </a>
-                        ` : ''}
+                        <div class="swipe-actions">
+                            <button class="swipe-delete-btn" onclick="confirmDelete('spot', {row: ${spot.row}})">刪除</button>
+                        </div>
                     </div>
                 `;
             });
 
             container.innerHTML = html;
+            initAllSwipes();
         }
 
         // ============================================
@@ -1445,24 +1542,30 @@
                 const icon = typeIcons[expense.type] || '💵';
                 const currency = expense.notes || 'NTD';
                 html += `
-                    <div class="expense-item">
-                        <div class="expense-icon">${icon}</div>
-                        <div class="expense-info">
-                            <div class="expense-title">${expense.type || '支出'}</div>
-                            <div class="expense-meta">
-                                <span>${expense.payer}</span>
-                                <span>${expense.date}</span>
+                    <div class="swipe-container" style="margin-bottom: 10px; border-radius: var(--ios-card-radius);">
+                        <div class="swipe-content expense-item" style="margin-bottom: 0;">
+                            <div class="expense-icon">${icon}</div>
+                            <div class="expense-info">
+                                <div class="expense-title">${expense.type || '支出'}</div>
+                                <div class="expense-meta">
+                                    <span>${expense.payer}</span>
+                                    <span>${expense.date}</span>
+                                </div>
+                            </div>
+                            <div class="expense-amount">
+                                ${expense.amount.toLocaleString()}
+                                <span class="currency">${currency}</span>
                             </div>
                         </div>
-                        <div class="expense-amount">
-                            ${expense.amount.toLocaleString()}
-                            <span class="currency">${currency}</span>
+                        <div class="swipe-actions">
+                            <button class="swipe-delete-btn" onclick="confirmDelete('expense', {row: ${expense.row}})">刪除</button>
                         </div>
                     </div>
                 `;
             });
 
             container.innerHTML = html;
+            initAllSwipes();
         }
 
         // ============================================
@@ -1645,6 +1748,119 @@
 
         function hideLoading() {
             document.getElementById('loading-overlay').classList.remove('active');
+        }
+
+        // ============================================
+        // 左滑刪除功能
+        // ============================================
+        let pendingDelete = null;
+        let activeSwipe = null;
+
+        function initSwipe(container) {
+            let startX = 0;
+            let currentX = 0;
+            let isSwiping = false;
+            const content = container.querySelector('.swipe-content');
+            const threshold = 80;
+
+            container.addEventListener('touchstart', (e) => {
+                // 先關閉其他已開啟的滑動項目
+                if (activeSwipe && activeSwipe !== container) {
+                    resetSwipe(activeSwipe);
+                }
+                startX = e.touches[0].clientX;
+                currentX = startX;
+                isSwiping = true;
+                content.classList.add('swiping');
+            });
+
+            container.addEventListener('touchmove', (e) => {
+                if (!isSwiping) return;
+                currentX = e.touches[0].clientX;
+                let diff = startX - currentX;
+
+                // 只允許向左滑
+                if (diff < 0) diff = 0;
+                if (diff > threshold) diff = threshold;
+
+                content.style.transform = `translateX(-${diff}px)`;
+            });
+
+            container.addEventListener('touchend', () => {
+                isSwiping = false;
+                content.classList.remove('swiping');
+
+                const diff = startX - currentX;
+                if (diff > threshold / 2) {
+                    // 顯示刪除按鈕
+                    content.style.transform = `translateX(-${threshold}px)`;
+                    activeSwipe = container;
+                } else {
+                    // 復位
+                    content.style.transform = 'translateX(0)';
+                    if (activeSwipe === container) activeSwipe = null;
+                }
+            });
+        }
+
+        function resetSwipe(container) {
+            const content = container.querySelector('.swipe-content');
+            if (content) {
+                content.style.transform = 'translateX(0)';
+            }
+            if (activeSwipe === container) activeSwipe = null;
+        }
+
+        function resetAllSwipes() {
+            document.querySelectorAll('.swipe-container').forEach(resetSwipe);
+        }
+
+        function initAllSwipes() {
+            document.querySelectorAll('.swipe-container').forEach(initSwipe);
+        }
+
+        function confirmDelete(type, data) {
+            pendingDelete = { type, data };
+            resetAllSwipes();
+            openModal('modal-delete');
+        }
+
+        async function executeDelete() {
+            if (!pendingDelete) return;
+            closeModal('modal-delete');
+            showLoading('正在刪除...');
+
+            const { type, data } = pendingDelete;
+            let body;
+
+            switch(type) {
+                case 'schedule':
+                    body = { action: 'deleteSchedule', row: data.row, dateIndex: data.dateIndex };
+                    break;
+                case 'spot':
+                    body = { action: 'deleteSpot', row: data.row };
+                    break;
+                case 'expense':
+                    body = { action: 'deleteExpense', row: data.row };
+                    break;
+            }
+
+            try {
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(body)
+                });
+
+                hideLoading();
+                showToast('已刪除');
+                pendingDelete = null;
+                setTimeout(() => loadData(), 500);
+            } catch (error) {
+                hideLoading();
+                showToast('刪除失敗');
+            }
         }
 
         // ============================================
