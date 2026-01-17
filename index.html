@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>學生點名系統</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+      background-color: #F2F2F7;
+      min-height: 100vh;
+      padding-bottom: 100px;
+    }
+
+    /* Header */
+    .header {
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 20px 16px 12px;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+      font-size: 34px;
+      font-weight: 700;
+      color: #000;
+      letter-spacing: -0.5px;
+    }
+
+    /* Tab Bar */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-btn {
+      flex: 1;
+      min-width: 70px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #fff;
+      color: #8E8E93;
+    }
+
+    .tab-btn.active {
+      background: #007AFF;
+      color: #fff;
+    }
+
+    .tab-btn:not(.active):hover {
+      background: #E5E5EA;
+    }
+
+    /* Card */
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      margin: 0 16px 16px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #8E8E93;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+
+    /* Form Group */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 15px;
+      font-weight: 500;
+      color: #3C3C43;
+      margin-bottom: 8px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 17px;
+      border: none;
+      border-radius: 12px;
+      background: #F2F2F7;
+      color: #000;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .form-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+    }
+
+    select.form-input {
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238E8E93' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    /* Selected Count */
+    .selected-count {
+      text-align: center;
+      padding: 12px;
+      font-size: 15px;
+      color: #8E8E93;
+    }
+
+    .selected-count span {
+      color: #007AFF;
+      font-weight: 600;
+    }
+
+    /* Seat Grid */
+    .seat-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+    }
+
+    .seat {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      background: #F2F2F7;
+      color: #3C3C43;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .seat:hover {
+      background: #E5E5EA;
+    }
+
+    .seat:active {
+      transform: scale(0.95);
+    }
+
+    .seat.selected {
+      background: #007AFF;
+      color: #fff;
+    }
+
+    /* Button Group */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 16px 24px;
+      font-size: 17px;
+      font-weight: 600;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-primary {
+      background: #007AFF;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #0066D6;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary:disabled {
+      background: #C7C7CC;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: #F2F2F7;
+      color: #FF3B30;
+    }
+
+    .btn-secondary:hover {
+      background: #E5E5EA;
+    }
+
+    /* Settings Card */
+    .settings-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .settings-card .form-input {
+      font-size: 14px;
+      font-family: 'SF Mono', 'Menlo', monospace;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      max-width: calc(100% - 32px);
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: rgba(52, 199, 89, 0.9);
+    }
+
+    .toast.error {
+      background: rgba(255, 59, 48, 0.9);
+    }
+
+    /* Loading Overlay */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .loading-overlay.show {
+      display: flex;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #E5E5EA;
+      border-top-color: #007AFF;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .seat-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+
+      .tab-btn {
+        min-width: 60px;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <h1>學生點名系統</h1>
+  </header>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-type="late">遲到</button>
+    <button class="tab-btn" data-type="absent">曠課</button>
+    <button class="tab-btn" data-type="leave">請假</button>
+    <button class="tab-btn" data-type="bonus">加分</button>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card">
+    <div class="card-title">記錄資訊</div>
+    <div class="form-group">
+      <label class="form-label">日期</label>
+      <input type="date" id="dateInput" class="form-input">
+    </div>
+    <div class="form-group">
+      <label class="form-label">堂次</label>
+      <select id="courseInput" class="form-input">
+        <option value="">請選擇堂次</option>
+        <option value="1">第 1 堂</option>
+        <option value="2">第 2 堂</option>
+        <option value="3">第 3 堂</option>
+        <option value="4">第 4 堂</option>
+        <option value="5">第 5 堂</option>
+        <option value="6">第 6 堂</option>
+        <option value="7">第 7 堂</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">班級</label>
+      <input type="text" id="classInput" class="form-input" placeholder="例如：101">
+    </div>
+  </div>
+
+  <!-- Seat Selection Card -->
+  <div class="card">
+    <div class="card-title">選擇學生</div>
+    <div class="selected-count">已選擇 <span id="selectedCount">0</span> 位學生</div>
+    <div class="seat-grid" id="seatGrid">
+      <!-- Seats will be generated by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="btn-group">
+    <button class="btn btn-secondary" id="clearBtn">清除全部</button>
+    <button class="btn btn-primary" id="saveBtn">儲存記錄</button>
+  </div>
+
+  <!-- Settings Card -->
+  <div class="card settings-card">
+    <div class="card-title">API 設定</div>
+    <div class="form-group">
+      <label class="form-label">Apps Script 部署網址</label>
+      <input type="url" id="apiUrl" class="form-input" placeholder="https://script.google.com/macros/s/...">
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+  </div>
+
+  <script>
+    // ===== State =====
+    let selectedType = 'late';
+    let selectedStudents = new Set();
+
+    // ===== DOM Elements =====
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const dateInput = document.getElementById('dateInput');
+    const courseInput = document.getElementById('courseInput');
+    const classInput = document.getElementById('classInput');
+    const seatGrid = document.getElementById('seatGrid');
+    const selectedCount = document.getElementById('selectedCount');
+    const clearBtn = document.getElementById('clearBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const apiUrlInput = document.getElementById('apiUrl');
+    const toast = document.getElementById('toast');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+
+    // ===== Initialize =====
+    function init() {
+      // Set today's date as default
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.value = today;
+
+      // Generate seat grid (1-40)
+      generateSeatGrid();
+
+      // Load saved API URL from localStorage
+      const savedUrl = localStorage.getItem('apiUrl');
+      if (savedUrl) {
+        apiUrlInput.value = savedUrl;
+      }
+
+      // Event listeners
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => selectTab(btn));
+      });
+
+      clearBtn.addEventListener('click', clearSelection);
+      saveBtn.addEventListener('click', saveRecord);
+      apiUrlInput.addEventListener('change', saveApiUrl);
+    }
+
+    // ===== Generate Seat Grid =====
+    function generateSeatGrid() {
+      seatGrid.innerHTML = '';
+      for (let i = 1; i <= 40; i++) {
+        const seat = document.createElement('div');
+        seat.className = 'seat';
+        seat.textContent = i;
+        seat.dataset.id = i;
+        seat.addEventListener('click', () => toggleSeat(seat, i));
+        seatGrid.appendChild(seat);
+      }
+    }
+
+    // ===== Tab Selection =====
+    function selectTab(btn) {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedType = btn.dataset.type;
+    }
+
+    // ===== Toggle Seat Selection =====
+    function toggleSeat(seatElement, studentId) {
+      if (selectedStudents.has(studentId)) {
+        selectedStudents.delete(studentId);
+        seatElement.classList.remove('selected');
+      } else {
+        selectedStudents.add(studentId);
+        seatElement.classList.add('selected');
+      }
+      updateSelectedCount();
+    }
+
+    // ===== Update Selected Count =====
+    function updateSelectedCount() {
+      selectedCount.textContent = selectedStudents.size;
+    }
+
+    // ===== Clear Selection =====
+    function clearSelection() {
+      selectedStudents.clear();
+      document.querySelectorAll('.seat.selected').forEach(seat => {
+        seat.classList.remove('selected');
+      });
+      updateSelectedCount();
+    }
+
+    // ===== Save API URL =====
+    function saveApiUrl() {
+      localStorage.setItem('apiUrl', apiUrlInput.value);
+    }
+
+    // ===== Show Toast =====
+    function showToast(message, type = 'info') {
+      toast.textContent = message;
+      toast.className = 'toast ' + type;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // ===== Show/Hide Loading =====
+    function setLoading(loading) {
+      if (loading) {
+        loadingOverlay.classList.add('show');
+        saveBtn.disabled = true;
+      } else {
+        loadingOverlay.classList.remove('show');
+        saveBtn.disabled = false;
+      }
+    }
+
+    // ===== Validate Form =====
+    function validateForm() {
+      if (!apiUrlInput.value.trim()) {
+        showToast('請先設定 Apps Script 部署網址', 'error');
+        return false;
+      }
+      if (!dateInput.value) {
+        showToast('請選擇日期', 'error');
+        return false;
+      }
+      if (!courseInput.value) {
+        showToast('請選擇堂次', 'error');
+        return false;
+      }
+      if (!classInput.value.trim()) {
+        showToast('請輸入班級', 'error');
+        return false;
+      }
+      if (selectedStudents.size === 0) {
+        showToast('請至少選擇一位學生', 'error');
+        return false;
+      }
+      return true;
+    }
+
+    // ===== Save Record =====
+    async function saveRecord() {
+      if (!validateForm()) return;
+
+      const data = {
+        type: selectedType,
+        date: dateInput.value,
+        course: courseInput.value,
+        class: classInput.value.trim(),
+        students: Array.from(selectedStudents).sort((a, b) => a - b)
+      };
+
+      setLoading(true);
+
+      try {
+        // Use fetch with redirect: 'follow' for Apps Script
+        const response = await fetch(apiUrlInput.value, {
+          method: 'POST',
+          redirect: 'follow',
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          const typeNames = {
+            'late': '遲到',
+            'absent': '曠課',
+            'leave': '請假',
+            'bonus': '加分'
+          };
+          showToast(`已記錄 ${selectedStudents.size} 位學生的${typeNames[selectedType]}`, 'success');
+          // Auto clear selection after successful save
+          clearSelection();
+        } else {
+          showToast('儲存失敗：' + result.message, 'error');
+        }
+      } catch (error) {
+        // For no-cors mode, we can't read the response
+        // Assume success if no error thrown
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+          showToast('網路錯誤，請檢查網址是否正確', 'error');
+        } else {
+          // If using no-cors, assume success
+          const typeNames = {
+            'late': '遲到',
+            'absent': '曠課',
+            'leave': '請假',
+            'bonus': '加分'
+          };
+          showToast(`已送出 ${selectedStudents.size} 位學生的${typeNames[selectedType]}記錄`, 'success');
+          clearSelection();
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // ===== Start App =====
+    init();
+  </script>
+</body>
+</html>
